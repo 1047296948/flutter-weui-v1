@@ -26,6 +26,8 @@ class WeChecklist extends StatefulWidget {
   final int max;
   // icon padding间距
   final double padding = 8.0;
+  // 是否有上下边框
+  final bool boxBorder;
   // left padding
   double _leftPadding;
   // right padding
@@ -35,6 +37,7 @@ class WeChecklist extends StatefulWidget {
     @required this.children,
     this.value,
     this.defaultValue,
+    this.boxBorder = false,
     this.align = 'left',
     this.onChange,
     max
@@ -171,11 +174,8 @@ class _ChecklistState extends State<WeChecklist> {
 
   @override
   Widget build(BuildContext context) {
-    final formContext = WeForm.of(context);
-
-    // 判断是否有form包裹
     return WeCells(
-      boxBorder: formContext == null,
+      boxBorder: widget.boxBorder,
       children: renderList()
     );
   }

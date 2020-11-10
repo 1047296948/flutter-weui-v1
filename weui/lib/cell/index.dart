@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/index.dart';
+
 // 间距
 const double labelSpacing = 20.0;
 
@@ -24,11 +25,7 @@ class WeCells extends StatelessWidget {
     children.forEach((item) {
       if (item != children[0]) {
         newChildren.add(
-          Padding(
-            padding: EdgeInsets.only(left: spacing),
-            child: _border
-          )
-        );
+            Padding(padding: EdgeInsets.only(left: spacing), child: _border));
       }
       newChildren.add(item);
     });
@@ -40,16 +37,11 @@ class WeCells extends StatelessWidget {
     }
 
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white
-      ),
-      child: _WeCellsScope(
-        weCells: this,
-        child: Column(
-          children: newChildren
-        ),
-      )
-    );
+        decoration: BoxDecoration(color: Colors.white),
+        child: _WeCellsScope(
+          weCells: this,
+          child: Column(children: newChildren),
+        ));
   }
 }
 
@@ -68,18 +60,20 @@ class WeCell extends StatelessWidget {
   final double minHeight;
   // 点击
   final Function onClick;
+  // 长按
+  final Function onLongPress;
 
-  WeCell({
-    label,
-    content,
-    this.footer,
-    this.align = Alignment.centerRight,
-    this.spacing = labelSpacing,
-    this.minHeight = 46.0,
-    this.onClick
-  }):
-    this.label = label is String ? Text(label) : label,
-    this.content = content is String ? Text(content) : content;
+  WeCell(
+      {label,
+      content,
+      this.footer,
+      this.align = Alignment.centerRight,
+      this.spacing = labelSpacing,
+      this.minHeight = 46.0,
+      this.onClick,
+      this.onLongPress})
+      : this.label = label is String ? Text(label) : label,
+        this.content = content is String ? Text(content) : content;
 
   // 点击
   void onTap() {
@@ -90,74 +84,43 @@ class WeCell extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> children = [];
     final _WeCellsScope weCellsScope = _WeCellsScope.of(context);
-    final double _spacing = weCellsScope == null ? spacing : weCellsScope.weCells.spacing;
+    final double _spacing =
+        weCellsScope == null ? spacing : weCellsScope.weCells.spacing;
 
     // label
     if (label is Widget) {
-      children = [
-        label
-      ];
+      children = [label];
 
       if (content is Widget) {
         children.add(
-          Expanded(
-            flex: 1,
-            child: Align(
-              alignment: align,
-              child: content
-            )
-          )
-        );
+            Expanded(flex: 1, child: Align(alignment: align, child: content)));
       }
     } else {
-      children = [
-        Expanded(
-          flex: 1,
-          child: content
-        )
-      ];
+      children = [Expanded(flex: 1, child: content)];
     }
 
     // footer
     if (footer != null) {
-      children.add(
-        Padding(
-          padding: EdgeInsets.only(left: 5),
-          child: footer
-        )
-      );
+      children.add(Padding(padding: EdgeInsets.only(left: 5), child: footer));
     }
 
     final child = Container(
-      constraints: BoxConstraints(
-        minHeight: minHeight
-      ),
-      child: DefaultTextStyle(
-        style: TextStyle(
-          fontSize: 16.0,
-          color: Colors.black
-        ),
-        child: Padding(
-          padding: EdgeInsets.only(left: _spacing, right: _spacing),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: children
-          )
-        )
-      )
-    );
+        constraints: BoxConstraints(minHeight: minHeight),
+        child: DefaultTextStyle(
+            style: TextStyle(fontSize: 16.0, color: Colors.black),
+            child: Padding(
+                padding: EdgeInsets.only(left: _spacing, right: _spacing),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: children))));
 
-    if (onClick == null) {
+    if (onClick == null && onLongPress == null) {
       return child;
     }
 
     return Material(
-      color: Colors.white,
-      child: InkWell(
-        onTap: onTap,
-        child: child
-      )
-    );
+        color: Colors.white,
+        child: InkWell(onTap: onTap, onLongPress: onLongPress, child: child));
   }
 }
 
@@ -179,4 +142,3 @@ class _WeCellsScope extends InheritedWidget {
     return true;
   }
 }
-

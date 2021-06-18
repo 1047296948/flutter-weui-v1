@@ -134,7 +134,7 @@ class _WeCellsScope extends InheritedWidget {
   }) : super(key: key, child: child);
 
   static _WeCellsScope of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(_WeCellsScope);
+    return context.dependOnInheritedWidgetOfExactType<_WeCellsScope>();
   }
 
   @override

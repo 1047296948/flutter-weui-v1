@@ -16,7 +16,7 @@ class WeForm extends StatefulWidget {
   }) : super(key: key);
 
   static WeFormState of(BuildContext context) {
-    final WeFormScope scope = context.inheritFromWidgetOfExactType(WeFormScope);
+    final WeFormScope scope = context.dependOnInheritedWidgetOfExactType<WeFormScope>();
     return scope?.state;
   }
 
@@ -63,7 +63,7 @@ class WeFormScope extends InheritedWidget {
   }) : super(key: key, child: child);
 
   static WeFormScope of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(WeFormScope);
+    return context.dependOnInheritedWidgetOfExactType<WeFormScope>();
   }
 
   //是否重建widget就取决于数据是否相同

@@ -190,7 +190,7 @@ class RadioGroupScope extends InheritedWidget {
   }) : super(key: key, child: child);
 
   static RadioGroupScope of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(RadioGroupScope);
+    return context.dependOnInheritedWidgetOfExactType<RadioGroupScope>();
   }
 
   @override

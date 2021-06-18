@@ -83,7 +83,7 @@ class WeUi extends InheritedWidget {
   }) : super(key: key, child: child);
 
   static WeUi of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(WeUi);
+    return context.dependOnInheritedWidgetOfExactType<WeUi>();
   }
 
   // 获取主题配置

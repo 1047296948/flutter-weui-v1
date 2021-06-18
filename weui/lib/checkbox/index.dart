@@ -217,7 +217,7 @@ class CheckboxGroupScope extends InheritedWidget {
   }) : super(key: key, child: child);
 
   static CheckboxGroupScope of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(CheckboxGroupScope);
+    return context.dependOnInheritedWidgetOfExactType<CheckboxGroupScope>();
   }
 
   @override

@@ -25,7 +25,7 @@ weui: 0.0.8
 ## 如何运行案例
 #### 1. clone 代码
 ```
-git clone https://github.com/RightFS/flutter-weui.git
+git clone https://github.com/allan-hx/flutter-weui.git
 ```
 
 #### 2. 安装依赖

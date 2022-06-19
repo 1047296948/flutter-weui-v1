@@ -7,16 +7,17 @@ class WeForm extends StatefulWidget {
   final double height;
   final List<Widget> children;
 
-  WeForm({
-    key,
-    this.boxBorder = true,
-    this.spacing = labelSpacing,
-    this.height = 50,
-    required this.children
-  }) : super(key: key);
+  WeForm(
+      {key,
+      this.boxBorder = true,
+      this.spacing = labelSpacing,
+      this.height = 50,
+      required this.children})
+      : super(key: key);
 
   static WeFormState? of(BuildContext context) {
-    final WeFormScope? scope = context.dependOnInheritedWidgetOfExactType<WeFormScope>();
+    final WeFormScope? scope =
+        context.dependOnInheritedWidgetOfExactType<WeFormScope>();
     return scope?.state;
   }
 
@@ -34,20 +35,17 @@ class WeFormState extends State<WeForm> {
     });
   }
 
-  validate() {
-  }
+  validate() {}
 
   @override
   Widget build(BuildContext context) {
     return WeFormScope(
-      state: this,
-      formValue: formValue,
-      child: WeCells(
-        boxBorder: widget.boxBorder,
-        spacing: widget.spacing,
-        children: widget.children
-      )
-    );
+        state: this,
+        formValue: formValue,
+        child: WeCells(
+            boxBorder: widget.boxBorder,
+            spacing: widget.spacing,
+            children: widget.children));
   }
 }
 
@@ -55,12 +53,8 @@ class WeFormScope extends InheritedWidget {
   final WeFormState? state;
   final dynamic formValue;
 
-  WeFormScope({
-    Key? key,
-    this.state,
-    this.formValue,
-    required Widget child
-  }) : super(key: key, child: child);
+  WeFormScope({Key? key, this.state, this.formValue, required Widget child})
+      : super(key: key, child: child);
 
   static WeFormScope? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<WeFormScope>();

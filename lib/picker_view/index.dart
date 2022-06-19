@@ -3,18 +3,19 @@ import '../theme/index.dart';
 
 typedef void OnChange(List<String> value);
 
-class  WePickerView extends StatefulWidget {
+class WePickerView extends StatefulWidget {
   final int itemCount;
   final double itemHeight;
   final OnChange? onChange;
   final List<List<WePickerItem>> options;
 
-  WePickerView({
-    itemCount = 5,
-    this.itemHeight = 42,
-    this.onChange,
-    required this.options
-  }) : assert(itemCount % 2 == 1), this.itemCount = itemCount;
+  WePickerView(
+      {itemCount = 5,
+      this.itemHeight = 42,
+      this.onChange,
+      required this.options})
+      : assert(itemCount % 2 == 1),
+        this.itemCount = itemCount;
 
   @override
   WePickerViewState createState() => WePickerViewState();
@@ -67,7 +68,8 @@ class WePickerViewState extends State<WePickerView> {
       top = -(colHeight - widget.itemHeight);
     } else {
       int number = (tops[index]! ~/ widget.itemHeight);
-      number = number + (-tops[index]! % widget.itemHeight >= itemHalfHeight ? -1 : 0);
+      number = number +
+          (-tops[index]! % widget.itemHeight >= itemHalfHeight ? -1 : 0);
       top = number * widget.itemHeight;
     }
 
@@ -79,84 +81,66 @@ class WePickerViewState extends State<WePickerView> {
   DecoratedBox _renderMaskDecoratedBox(Alignment begin, Alignment end) {
     return DecoratedBox(
         decoration: BoxDecoration(
-          gradient: new LinearGradient(
-            begin: begin,
-            end: end,
-            colors: [Color.fromRGBO(255, 255, 255, 0.2), Color.fromRGBO(255, 255, 255, 1)]
-          )
-        )
-      );
+            gradient: new LinearGradient(begin: begin, end: end, colors: [
+      Color.fromRGBO(255, 255, 255, 0.2),
+      Color.fromRGBO(255, 255, 255, 1)
+    ])));
   }
 
-  List<Widget> renderItem () {
+  List<Widget> renderItem() {
     final List<Widget> columns = [];
 
     for (int i = 0; i < widget.options.length; i++) {
       final column = widget.options[i];
-      columns.add(
-        Expanded(
+      columns.add(Expanded(
           flex: 1,
           child: GestureDetector(
-            onVerticalDragDown: (_) {
-              onVerticalDragDown(_, i);
-            },
-            onVerticalDragUpdate: (_) {
-              onVerticalDragUpdate(_, i);
-            },
-            onVerticalDragEnd: (_) {
-              onVerticalDragEnd(i);
-            },
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: tops[i] == null ? 0 : tops[i],
-                    right: 0,
-                    left: 0,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: borderTop),
-                      child: Column(
-                        children: column.map((item) {
-                          return SizedBox(
-                            height: widget.itemHeight,
-                            child: DefaultTextStyle(
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black
-                              ),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Text(item.label)
-                              )
-                            )
-                          );
-                        }).toList()
-                      )
-                    )
+              onVerticalDragDown: (_) {
+                onVerticalDragDown(_, i);
+              },
+              onVerticalDragUpdate: (_) {
+                onVerticalDragUpdate(_, i);
+              },
+              onVerticalDragEnd: (_) {
+                onVerticalDragEnd(i);
+              },
+              child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
                   ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    bottom: borderTop + widget.itemHeight,
-                    child: _renderMaskDecoratedBox(Alignment.bottomCenter, Alignment.topCenter)
-                  ),
-                  Positioned(
-                    top: borderTop + widget.itemHeight,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                    child: _renderMaskDecoratedBox(Alignment.topCenter, Alignment.bottomCenter)
-                  )
-                ]
-              )
-            )
-          )
-        )
-      );
+                  child: Stack(children: [
+                    Positioned(
+                        top: tops[i] == null ? 0 : tops[i],
+                        right: 0,
+                        left: 0,
+                        child: Padding(
+                            padding: EdgeInsets.only(top: borderTop),
+                            child: Column(
+                                children: column.map((item) {
+                              return SizedBox(
+                                  height: widget.itemHeight,
+                                  child: DefaultTextStyle(
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.black),
+                                      child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(item.label))));
+                            }).toList()))),
+                    Positioned(
+                        top: 0,
+                        right: 0,
+                        left: 0,
+                        bottom: borderTop + widget.itemHeight,
+                        child: _renderMaskDecoratedBox(
+                            Alignment.bottomCenter, Alignment.topCenter)),
+                    Positioned(
+                        top: borderTop + widget.itemHeight,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                        child: _renderMaskDecoratedBox(
+                            Alignment.topCenter, Alignment.bottomCenter))
+                  ])))));
     }
 
     return columns;
@@ -165,28 +149,21 @@ class WePickerViewState extends State<WePickerView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      height: boxHeight,
-      child: Stack(
-        children: [
-          Row(
-            children: renderItem()
-          ),
+        color: Colors.white,
+        height: boxHeight,
+        child: Stack(children: [
+          Row(children: renderItem()),
           Positioned(
-            top: borderTop,
-            left: 0,
-            right: 0,
-            child: Divider(height: 1, color: theme.defaultBorderColor)
-          ),
+              top: borderTop,
+              left: 0,
+              right: 0,
+              child: Divider(height: 1, color: theme.defaultBorderColor)),
           Positioned(
-            top: borderTop + widget.itemHeight,
-            left: 0,
-            right: 0,
-            child: Divider(height: 1, color: theme.defaultBorderColor)
-          )
-        ]
-      )
-    );
+              top: borderTop + widget.itemHeight,
+              left: 0,
+              right: 0,
+              child: Divider(height: 1, color: theme.defaultBorderColor))
+        ]));
   }
 }
 
@@ -194,8 +171,5 @@ class WePickerItem {
   final String label;
   final String value;
 
-  WePickerItem({
-    required this.label,
-    required this.value
-  });
+  WePickerItem({required this.label, required this.value});
 }

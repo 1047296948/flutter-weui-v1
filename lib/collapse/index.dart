@@ -5,34 +5,41 @@ import '../theme/index.dart';
 class WeCollapse extends StatefulWidget {
   // 数据
   final List<WeCollapseItem> children;
+
   // 默认展示
-  final List<String> defaultActive;
+  final List<String>? defaultActive;
+
   // 动画过度时间
   final int duration;
+
   // 卡片展示
   final bool card;
+
   // 卡片间距
   final double clearance;
+
   // 渲染标题
-  final Widget Function(bool open, int index, Widget child) buildTitle;
+  final Widget Function(bool open, int index, Widget child)? buildTitle;
+
   // 渲染内容
-  final Widget Function(bool open, int index, Widget child) buildContent;
+  final Widget Function(bool open, int index, Widget child)? buildContent;
+
   // 变化回调
-  final Function(List<String>) onChange;
+  final Function(List<String>)? onChange;
+
   // 手风琴模式
   final bool accordion;
 
-  WeCollapse({
-    @required this.children,
-    this.defaultActive,
-    this.duration = 150,
-    this.card = false,
-    this.clearance = 13.0,
-    this.buildTitle,
-    this.buildContent,
-    this.onChange,
-    this.accordion = false
-  });
+  WeCollapse(
+      {required this.children,
+      this.defaultActive,
+      this.duration = 150,
+      this.card = false,
+      this.clearance = 13.0,
+      this.buildTitle,
+      this.buildContent,
+      this.onChange,
+      this.accordion = false});
 
   @override
   WeCollapseState createState() => WeCollapseState();
@@ -41,12 +48,16 @@ class WeCollapse extends StatefulWidget {
 class WeCollapseState extends State<WeCollapse> {
   // 内容左右padding
   double borderPadding = 19.0;
+
   // title左右padding
   final double titleOrSoPadding = 19.0;
+
   // 上下padding
   final double titleUpAndDownPadding = 13.0;
+
   // 边框
-  Widget border;
+  late Widget border;
+
   // 当前激活
   List<String> activeIndex = [];
 
@@ -59,14 +70,15 @@ class WeCollapseState extends State<WeCollapse> {
     }
 
     if (widget.defaultActive != null) {
-      activeIndex = widget.defaultActive;
+      activeIndex = widget.defaultActive!;
     }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    border = Divider(height: 1, color: WeUi.getTheme(context).defaultBorderColor);
+    border =
+        Divider(height: 1, color: WeUi.getTheme(context).defaultBorderColor);
   }
 
   void onClick(String key) {
@@ -86,7 +98,7 @@ class WeCollapseState extends State<WeCollapse> {
       activeIndex = activeList;
     });
 
-    if (widget.onChange is Function) widget.onChange(activeList);
+    if (widget.onChange is Function) widget.onChange!(activeList);
   }
 
   // 渲染title
@@ -95,44 +107,33 @@ class WeCollapseState extends State<WeCollapse> {
     Widget titleWidget;
 
     if (widget.buildTitle is Function) {
-      titleWidget = widget.buildTitle(checked, index, item.title);
+      titleWidget = widget.buildTitle!(checked, index, item.title);
     } else {
       titleWidget = Padding(
-        padding: EdgeInsets.only(
-          top: titleUpAndDownPadding,
-          right: titleOrSoPadding,
-          bottom: titleUpAndDownPadding,
-          left: titleOrSoPadding
-        ),
-        child: Row(
-          children: [
+          padding: EdgeInsets.only(
+              top: titleUpAndDownPadding,
+              right: titleOrSoPadding,
+              bottom: titleUpAndDownPadding,
+              left: titleOrSoPadding),
+          child: Row(children: [
             // title
             Expanded(
-              flex: 1,
-              child: DefaultTextStyle(
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Color(0xff333333)
-                ),
-                child: item.title
-              )
-            ),
+                flex: 1,
+                child: DefaultTextStyle(
+                    style: TextStyle(fontSize: 16.0, color: Color(0xff333333)),
+                    child: item.title)),
             // icon
             Transform.rotate(
-              angle: checked ? (-180 ~/ 30) * 30.0 * 0.0174533 : 0.0,
-              child: Icon(WeIcons.down, size: 26.0, color: Color(0xff969799))
-            )
-          ]
-        )
-      );
+                angle: checked ? (-180 ~/ 30) * 30.0 * 0.0174533 : 0.0,
+                child: Icon(WeIcons.down, size: 26.0, color: Color(0xff969799)))
+          ]));
     }
 
     return InkWell(
-      onTap: () {
-        onClick(key);
-      },
-      child: titleWidget
-    );
+        onTap: () {
+          onClick(key);
+        },
+        child: titleWidget);
   }
 
   // 渲染内容
@@ -140,40 +141,26 @@ class WeCollapseState extends State<WeCollapse> {
     Widget childWidget;
 
     if (widget.buildContent is Function) {
-      childWidget = widget.buildContent(open, index, content);
+      childWidget = widget.buildContent!(open, index, content);
     } else {
-      childWidget = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
+      childWidget =
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Padding(padding: EdgeInsets.only(left: borderPadding), child: border),
+        Padding(
             padding: EdgeInsets.only(
-              left: borderPadding
-            ),
-            child: border
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              top: titleOrSoPadding,
-              right: titleOrSoPadding,
-              bottom: titleOrSoPadding,
-              left: titleOrSoPadding
-            ),
-            child: content
-          )
-        ]
-      );
+                top: titleOrSoPadding,
+                right: titleOrSoPadding,
+                bottom: titleOrSoPadding,
+                left: titleOrSoPadding),
+            child: content)
+      ]);
     }
 
     return Align(
-      alignment: Alignment.centerLeft,
-      child: DefaultTextStyle(
-        style: TextStyle(
-          fontSize: 14.0,
-          color: Colors.black
-        ),
-        child: childWidget
-      )
-    );
+        alignment: Alignment.centerLeft,
+        child: DefaultTextStyle(
+            style: TextStyle(fontSize: 14.0, color: Colors.black),
+            child: childWidget));
   }
 
   Widget buildItem(String key, int index, WeCollapseItem item) {
@@ -181,21 +168,17 @@ class WeCollapseState extends State<WeCollapse> {
     final bool open = activeIndex.indexOf(key) >= 0;
 
     // 内容
-    children.add(
-      AnimatedCrossFade(
+    children.add(AnimatedCrossFade(
         firstChild: Container(),
         secondChild: buildContent(open, index, item.child),
         firstCurve: const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
         secondCurve: const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
         sizeCurve: Curves.fastOutSlowIn,
-        crossFadeState: open ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-        duration: Duration(milliseconds: widget.duration)
-      )
-    );
+        crossFadeState:
+            open ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+        duration: Duration(milliseconds: widget.duration)));
 
-    return Column(
-      children: children
-    );
+    return Column(children: children);
   }
 
   renderChildren(list) {
@@ -205,19 +188,14 @@ class WeCollapseState extends State<WeCollapse> {
     for (int index = 0; index < list.length; index++) {
       final item = list[index];
       final key = item.key == null ? index.toString() : item.key;
-      final Widget child = Material(
-        color: Colors.white,
-        child: buildItem(key, index, item)
-      );
+      final Widget child =
+          Material(color: Colors.white, child: buildItem(key, index, item));
 
       // 判断是否卡片样式
       if (widget.card) {
-        children.add(
-          Padding(
+        children.add(Padding(
             padding: EdgeInsets.only(top: index == 0 ? 0.0 : widget.clearance),
-            child: child
-          )
-        );
+            child: child));
       } else {
         children.add(border);
         children.add(child);
@@ -225,33 +203,26 @@ class WeCollapseState extends State<WeCollapse> {
     }
 
     // 默认边框
-    if (widget.card == false) 
-      children.add(border);
+    if (widget.card == false) children.add(border);
 
     return children;
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Column(
-        children: renderChildren(widget.children)
-      )
-    );
+    return SizedBox(child: Column(children: renderChildren(widget.children)));
   }
 }
 
 class WeCollapseItem {
   // key
-  final String key;
+  final String? key;
+
   // 标题
   final Widget title;
+
   // 内容
   final Widget child;
 
-  WeCollapseItem({
-    this.key,
-    @required this.title,
-    @required this.child
-  });
+  WeCollapseItem({this.key, required this.title, required this.child});
 }

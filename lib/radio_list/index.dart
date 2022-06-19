@@ -13,28 +13,34 @@ final double _iconSize = 24.0;
 class WeRadiolist extends StatefulWidget {
   // 选项
   final List<WeRadiolistItem> children;
+
   // value
   final String? value;
+
   // defaultValue
   final String? defaultValue;
+
   // 排列方式
   final String align;
+
   // onChange
   final _ChangeBack? onChange;
+
   // icon padding间距
   final double padding = 8.0;
+
   // left padding
   late double _leftPadding;
+
   // right padding
   late double _rightPadding;
 
-  WeRadiolist({
-    required this.children,
-    this.value,
-    this.defaultValue,
-    this.align = 'right',
-    this.onChange
-  }) {
+  WeRadiolist(
+      {required this.children,
+      this.value,
+      this.defaultValue,
+      this.align = 'right',
+      this.onChange}) {
     if (align == 'left') {
       _leftPadding = 0.0;
       _rightPadding = padding;
@@ -90,17 +96,14 @@ class _RadiolistState extends State<WeRadiolist> {
     final Color color = Color(0xffc9c9c9);
 
     return Container(
-      width: _iconSize,
-      height: _iconSize,
-      child: isChecked ? Align(
-        alignment: Alignment.center,
-        child: Icon(
-          WeIcons.hook,
-          color: isDisabled ? color : primaryColor,
-          size: 18
-        )
-      ) : null
-    );
+        width: _iconSize,
+        height: _iconSize,
+        child: isChecked
+            ? Align(
+                alignment: Alignment.center,
+                child: Icon(WeIcons.hook,
+                    color: isDisabled ? color : primaryColor, size: 18))
+            : null);
   }
 
   List<WeCell> renderList() {
@@ -108,19 +111,16 @@ class _RadiolistState extends State<WeRadiolist> {
       List<Widget> children;
       // 图标
       final icon = Padding(
-        padding: EdgeInsets.only(left: widget._leftPadding, right: widget._rightPadding),
-        child: renderIcon(item)
-      );
+          padding: EdgeInsets.only(
+              left: widget._leftPadding, right: widget._rightPadding),
+          child: renderIcon(item));
       // 内容
       final content = Expanded(
-        flex: 1,
-        child: Container(
-          child: Opacity(
-            opacity: isTrue(item.disabled) ? 0.65 : 1.0,
-            child: toTextWidget(item.label, 'label')
-          )
-        )
-      );
+          flex: 1,
+          child: Container(
+              child: Opacity(
+                  opacity: isTrue(item.disabled) ? 0.65 : 1.0,
+                  child: toTextWidget(item.label, 'label'))));
 
       // 排列方式
       if (widget.align == 'left') {
@@ -130,13 +130,12 @@ class _RadiolistState extends State<WeRadiolist> {
       }
 
       return WeCell(
-        content: Row(
-          children: children
-        ),
-        onClick: item.disabled ? null : () {
-          change(item);
-        }
-      );
+          content: Row(children: children),
+          onClick: item.disabled
+              ? null
+              : () {
+                  change(item);
+                });
     }).toList();
   }
 
@@ -144,10 +143,7 @@ class _RadiolistState extends State<WeRadiolist> {
   Widget build(BuildContext context) {
     final formContext = WeForm.of(context);
 
-    return WeCells(
-      boxBorder: formContext == null,
-      children: renderList()
-    );
+    return WeCells(boxBorder: formContext == null, children: renderList());
   }
 }
 
@@ -156,10 +152,6 @@ class WeRadiolistItem {
   final String value;
   final bool disabled;
 
-  WeRadiolistItem({
-    required this.label,
-    required this.value,
-    this.disabled = false
-  });
+  WeRadiolistItem(
+      {required this.label, required this.value, this.disabled = false});
 }
-

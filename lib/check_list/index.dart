@@ -14,34 +14,43 @@ final double _iconSize = 22.0;
 class WeChecklist extends StatefulWidget {
   // 选项
   final List<WeChecklistItem> children;
+
   // value
   final List<String>? value;
+
   // 默认选中
   final List<String>? defaultValue;
+
   // 排列方式
   final String align;
+
   // onChange
   final _OnChangeBack? onChange;
+
   // max
   final int max;
+
   // icon padding间距
   final double padding = 8.0;
+
   // 是否有上下边框
   final bool boxBorder;
+
   // left padding
   late double _leftPadding;
+
   // right padding
   late double _rightPadding;
 
-  WeChecklist({
-    required this.children,
-    this.value,
-    this.defaultValue,
-    this.boxBorder = false,
-    this.align = 'left',
-    this.onChange,
-    max
-  }): this.max = max is int ? max : children.length {
+  WeChecklist(
+      {required this.children,
+      this.value,
+      this.defaultValue,
+      this.boxBorder = false,
+      this.align = 'left',
+      this.onChange,
+      max})
+      : this.max = max is int ? max : children.length {
     if (align == 'left') {
       _leftPadding = 0.0;
       _rightPadding = padding;
@@ -102,7 +111,8 @@ class _ChecklistState extends State<WeChecklist> {
     // 是否选中
     final bool isChecked = checkedList.indexOf(item.value) >= 0;
     // 配置了禁用或者达到限制
-    final bool isDisabled = isTrue(item.disabled) || (checkedList.length == widget.max && !isChecked);
+    final bool isDisabled = isTrue(item.disabled) ||
+        (checkedList.length == widget.max && !isChecked);
     Color borderColor;
     Color bgColor;
 
@@ -117,22 +127,17 @@ class _ChecklistState extends State<WeChecklist> {
     }
 
     return Container(
-      width: _iconSize,
-      height: _iconSize,
-      decoration: BoxDecoration(
-        color: bgColor,
-        border: Border.all(width: 1, color: borderColor),
-        borderRadius: BorderRadius.all(Radius.circular(_iconSize))
-      ),
-      child: isChecked ? Align(
-        alignment: Alignment.center,
-        child: Icon(
-          WeIcons.hook,
-          color: Colors.white,
-          size: 16
-        )
-      ) : null
-    );
+        width: _iconSize,
+        height: _iconSize,
+        decoration: BoxDecoration(
+            color: bgColor,
+            border: Border.all(width: 1, color: borderColor),
+            borderRadius: BorderRadius.all(Radius.circular(_iconSize))),
+        child: isChecked
+            ? Align(
+                alignment: Alignment.center,
+                child: Icon(WeIcons.hook, color: Colors.white, size: 16))
+            : null);
   }
 
   List<WeCell> renderList() {
@@ -140,19 +145,16 @@ class _ChecklistState extends State<WeChecklist> {
       List<Widget> children;
       // 图标
       final icon = Padding(
-        padding: EdgeInsets.only(left: widget._leftPadding, right: widget._rightPadding),
-        child: renderIcon(item)
-      );
+          padding: EdgeInsets.only(
+              left: widget._leftPadding, right: widget._rightPadding),
+          child: renderIcon(item));
       // 内容
       final content = Expanded(
-        flex: 1,
-        child: Container(
-          child: Opacity(
-            opacity: isTrue(item.disabled) ? 0.65 : 1.0,
-            child: toTextWidget(item.label, 'label')
-          )
-        )
-      );
+          flex: 1,
+          child: Container(
+              child: Opacity(
+                  opacity: isTrue(item.disabled) ? 0.65 : 1.0,
+                  child: toTextWidget(item.label, 'label'))));
 
       // 排列方式
       if (widget.align == 'left') {
@@ -162,22 +164,18 @@ class _ChecklistState extends State<WeChecklist> {
       }
 
       return WeCell(
-        content: Row(
-          children: children
-        ),
-        onClick: item.disabled ? null : () {
-          change(item);
-        }
-      );
+          content: Row(children: children),
+          onClick: item.disabled
+              ? null
+              : () {
+                  change(item);
+                });
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WeCells(
-      boxBorder: widget.boxBorder,
-      children: renderList()
-    );
+    return WeCells(boxBorder: widget.boxBorder, children: renderList());
   }
 }
 
@@ -186,9 +184,6 @@ class WeChecklistItem {
   final String value;
   final bool disabled;
 
-  WeChecklistItem({
-    required this.label,
-    required this.value,
-    this.disabled = false
-  });
+  WeChecklistItem(
+      {required this.label, required this.value, this.disabled = false});
 }

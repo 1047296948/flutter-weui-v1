@@ -12,8 +12,10 @@ import '../animation/rotating.dart';
 class WeSpin extends StatelessWidget {
   // 显示状态
   final bool isShow;
+
   // 提示文字
   final Widget? tip;
+
   // 内容
   final Widget child;
 
@@ -26,24 +28,18 @@ class WeSpin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> children = [
-      Rotating(
-        Image.asset('assets/images/loading.png', height: 30.0, package: 'weui')
-      ),
+      Rotating(Image.asset('assets/images/loading.png',
+          height: 30.0, package: 'weui')),
     ];
 
     // 判断是否添加tip
     if (tip != null) {
       children.add(
         Padding(
-          padding: EdgeInsets.only(
-            top: 6.0
-          ),
+          padding: EdgeInsets.only(top: 6.0),
           child: Center(
             child: DefaultTextStyle(
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black
-              ),
+              style: TextStyle(fontSize: 14, color: Colors.black),
               child: tip!,
             ),
           ),
@@ -51,13 +47,15 @@ class WeSpin extends StatelessWidget {
       );
     }
 
-    return isShow ? Container(
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: children,
-        ),
-      ),
-    ) : child;
+    return isShow
+        ? Container(
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: children,
+              ),
+            ),
+          )
+        : child;
   }
 }

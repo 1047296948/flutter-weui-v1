@@ -8,13 +8,12 @@ class WeBadge extends StatefulWidget {
   final Border border;
   final bool hollow;
 
-  WeBadge({
-    this.child,
-    this.color,
-    this.textStyle,
-    this.border,
-    this.hollow = false
-  });
+  WeBadge(
+      {this.child,
+      this.color,
+      this.textStyle,
+      this.border,
+      this.hollow = false});
 
   @override
   WeBadgeState createState() => WeBadgeState();
@@ -46,27 +45,18 @@ class WeBadgeState extends State<WeBadge> {
       border = null;
     }
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        DecoratedBox(
+    return Row(mainAxisSize: MainAxisSize.min, children: [
+      DecoratedBox(
           decoration: BoxDecoration(
-            color: boxColor,
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            border: widget.border == null ? border : widget.border
-          ),
+              color: boxColor,
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              border: widget.border == null ? border : widget.border),
           child: Padding(
-            padding: EdgeInsets.only(top: 2.0, right: 7.0, bottom: 2.0, left: 7.0),
-            child: DefaultTextStyle(
-              style: TextStyle(
-                fontSize: 13.0,
-                color: textColor
-              ),
-              child: Text(widget.child, style: widget.textStyle)
-            )
-          )
-        )
-      ]
-    );
+              padding:
+                  EdgeInsets.only(top: 2.0, right: 7.0, bottom: 2.0, left: 7.0),
+              child: DefaultTextStyle(
+                  style: TextStyle(fontSize: 13.0, color: textColor),
+                  child: Text(widget.child, style: widget.textStyle))))
+    ]);
   }
 }

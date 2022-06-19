@@ -9,25 +9,29 @@ const Color _color = Color(0xfffffbe8);
 class WeNoticeBar extends StatefulWidget {
   // 字体颜色
   final Color fontColor;
+
   // 背景色
   final Color color;
+
   // 图标
-  final Widget icon;
+  final Widget? icon;
+
   // 动画过度时间
   final int duration;
+
   // 是否可关闭
   final bool closeable;
+
   // 内容
   final dynamic child;
 
-  WeNoticeBar({
-    this.fontColor = _fontColor,
-    this.color = _color,
-    this.icon,
-    this.duration = 15000,
-    this.closeable = false,
-    @required this.child
-  });
+  WeNoticeBar(
+      {this.fontColor = _fontColor,
+      this.color = _color,
+      this.icon,
+      this.duration = 15000,
+      this.closeable = false,
+      required this.child});
 
   @override
   NoticeBarState createState() => NoticeBarState();
@@ -36,17 +40,22 @@ class WeNoticeBar extends StatefulWidget {
 class NoticeBarState extends State<WeNoticeBar> with TickerProviderStateMixin {
   // bar容器key
   GlobalKey _barKey = GlobalKey();
+
   // box
   GlobalKey _boxKey = GlobalKey();
+
   // 最大值
-  double _maxLeft;
-  double _boxWidth;
+  late double _maxLeft;
+  late double _boxWidth;
+
   // padding
   final double _boxPadding = 5.0;
   double _left = 0;
+
   // 动画
-  AnimationController controller;
-  Animation transform;
+  late AnimationController? controller;
+  late Animation transform;
+
   // 是否被关闭
   bool isClose = false;
 
@@ -57,16 +66,14 @@ class NoticeBarState extends State<WeNoticeBar> with TickerProviderStateMixin {
   }
 
   void init(Duration time) {
-    _maxLeft = _barKey.currentContext.size.width;
-    _boxWidth = _boxKey.currentContext.size.width;
+    _maxLeft = _barKey.currentContext!.size!.width;
+    _boxWidth = _boxKey.currentContext!.size!.width;
     // 判断是否滚动
     if (_maxLeft > _boxWidth) {
       // 初始化动画
       controller = AnimationController(
-        duration: Duration(milliseconds: widget.duration),
-        vsync: this
-      )
-      ..repeat();
+          duration: Duration(milliseconds: widget.duration), vsync: this)
+        ..repeat();
       createAnimate(0.0, -_maxLeft);
     }
   }
@@ -74,12 +81,7 @@ class NoticeBarState extends State<WeNoticeBar> with TickerProviderStateMixin {
   // 创建动画
   void createAnimate(double start, double end) {
     transform = Tween<double>(begin: start, end: end)
-      .animate(
-        CurvedAnimation(
-          parent: controller,
-          curve: Curves.linear
-        )
-      )
+        .animate(CurvedAnimation(parent: controller!, curve: Curves.linear))
       ..addListener(() {
         setState(() {
           if (-(_maxLeft - 1) >= transform.value) {
@@ -96,7 +98,7 @@ class NoticeBarState extends State<WeNoticeBar> with TickerProviderStateMixin {
   void close() {
     disposeAnimate();
     setState(() {
-      isClose = true;     
+      isClose = true;
     });
   }
 
@@ -120,68 +122,45 @@ class NoticeBarState extends State<WeNoticeBar> with TickerProviderStateMixin {
 
     final List<Widget> children = [
       Expanded(
-        key: _boxKey,
-        flex: 1,
-        child: Stack(
-          children: <Widget>[
+          key: _boxKey,
+          flex: 1,
+          child: Stack(children: <Widget>[
             Positioned(
-              top: 0,
-              left: 0,
-              bottom: 0,
-              child: Align(
-                key: _barKey,
-                alignment: Alignment.centerLeft,
-                child: DefaultTextStyle(
-                  style: TextStyle(
-                    color: widget.fontColor,
-                    fontSize: 14.0
-                  ),
-                  child: Transform.translate(
-                    offset: Offset(_left, 0.0),
-                    child: widget.child
-                  )
-                )
-              )
-            )
-          ]
-        )
-      )
+                top: 0,
+                left: 0,
+                bottom: 0,
+                child: Align(
+                    key: _barKey,
+                    alignment: Alignment.centerLeft,
+                    child: DefaultTextStyle(
+                        style:
+                            TextStyle(color: widget.fontColor, fontSize: 14.0),
+                        child: Transform.translate(
+                            offset: Offset(_left, 0.0), child: widget.child))))
+          ]))
     ];
 
     // 判断是否添加图标
     if (widget.icon != null) {
-      children.insert(0, Padding(
-        padding: EdgeInsets.only(right: 5.0),
-        child: widget.icon
-      ));
+      children.insert(
+          0, Padding(padding: EdgeInsets.only(right: 5.0), child: widget.icon));
     }
 
     // 判断是否添加关闭按钮
     if (widget.closeable) {
-      children.add(
-        GestureDetector(
+      children.add(GestureDetector(
           onTap: close,
           child: Padding(
-            padding: EdgeInsets.only(left: 10.0),
-            child: Icon(WeIcons.del, color: widget.fontColor, size: 20.0)
-          )
-        )
-      );
+              padding: EdgeInsets.only(left: 10.0),
+              child: Icon(WeIcons.del, color: widget.fontColor, size: 20.0))));
     }
 
     return SizedBox(
-      height: 40.0,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: widget.color
-        ),
-        child: Padding(
-          padding: EdgeInsets.only(left: _boxPadding, right: _boxPadding),
-          child: Row(
-            children: children
-          )
-        )
-      )
-    );
+        height: 40.0,
+        child: DecoratedBox(
+            decoration: BoxDecoration(color: widget.color),
+            child: Padding(
+                padding: EdgeInsets.only(left: _boxPadding, right: _boxPadding),
+                child: Row(children: children))));
   }
 }

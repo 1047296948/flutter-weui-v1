@@ -5,15 +5,15 @@ import './drawer.dart';
 export './drawer.dart';
 
 typedef ShowDrawer = Function({
-  // 是否显示mask
+// 是否显示mask
   bool mask,
-  // 遮罩层点击关闭
+// 遮罩层点击关闭
   bool maskClosable,
-  // 方向
+// 方向
   WeDrawerPlacement placement,
-  // 背景色
+// 背景色
   Color background,
-  // 内容
+// 内容
   @required Widget child,
 });
 
@@ -30,7 +30,7 @@ ShowDrawer weDrawer(BuildContext context) {
     onClose,
     child,
   }) {
-    Function remove;
+    late Function remove;
 
     // 关闭方法
     close() async {

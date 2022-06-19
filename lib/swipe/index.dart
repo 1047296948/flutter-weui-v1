@@ -3,46 +3,58 @@ import 'dart:async';
 
 class WeSwipe extends StatefulWidget {
   final GlobalKey? key;
+
   // 数量
   final int itemCount;
+
   // 渲染每个item
   final Widget Function(int index) itemBuilder;
+
   // 宽度
   final double? width;
+
   // 高度
   final double? height;
+
   // 默认展示
   final int defaultIndex;
+
   // 循环
   final bool cycle;
+
   // 是否显示指示
   final bool indicators;
+
   // 自动播放时间
   final int playDuration;
+
   // 自动播放
   final bool autoPlay;
+
   // 动画过度时间
   final int duration;
+
   // 动画过度曲线
   final Curve curve;
+
   // 回调
   final Function(int index)? onChang;
 
-  WeSwipe({
-    this.key,
-    required this.itemCount,
-    required this.itemBuilder,
-    this.width,
-    this.height,
-    this.defaultIndex = 0,
-    this.cycle = true,
-    this.indicators = true,
-    this.playDuration = 3000,
-    this.autoPlay = true,
-    this.duration = 280,
-    this.curve = Curves.bounceIn,
-    this.onChang
-  }) : super(key: key);
+  WeSwipe(
+      {this.key,
+      required this.itemCount,
+      required this.itemBuilder,
+      this.width,
+      this.height,
+      this.defaultIndex = 0,
+      this.cycle = true,
+      this.indicators = true,
+      this.playDuration = 3000,
+      this.autoPlay = true,
+      this.duration = 280,
+      this.curve = Curves.bounceIn,
+      this.onChang})
+      : super(key: key);
 
   @override
   WeSwipeState createState() => WeSwipeState();
@@ -75,9 +87,7 @@ class WeSwipeState extends State<WeSwipe> {
     }
 
     // PageController
-    _pageController = PageController(
-      initialPage: _index
-    );
+    _pageController = PageController(initialPage: _index);
 
     // 自动播放
     if (widget.autoPlay) {
@@ -93,27 +103,20 @@ class WeSwipeState extends State<WeSwipe> {
 
   // 设置展示的索引
   void setIndex(int index) {
-    _pageController.animateToPage(
-      index,
-      duration: Duration(milliseconds: widget.duration),
-      curve: widget.curve
-    );
+    _pageController.animateToPage(index,
+        duration: Duration(milliseconds: widget.duration), curve: widget.curve);
   }
 
   // 上一页
   void previousPage() {
     _pageController.previousPage(
-      duration: Duration(milliseconds: widget.duration),
-      curve: widget.curve
-    );
+        duration: Duration(milliseconds: widget.duration), curve: widget.curve);
   }
 
   // 下一页
   void nextPage() {
     _pageController.nextPage(
-      duration: Duration(milliseconds: widget.duration),
-      curve: widget.curve
-    );
+        duration: Duration(milliseconds: widget.duration), curve: widget.curve);
   }
 
   void onChang(int index) {
@@ -132,33 +135,26 @@ class WeSwipeState extends State<WeSwipe> {
     final double size = 7.0;
 
     for (var i = 0; i < widget.itemCount; i++) {
-      indicators.add(
-        Padding(
+      indicators.add(Padding(
           padding: EdgeInsets.only(left: i == 0 ? 0.0 : 7.0),
           child: Opacity(
-            opacity: index == i ? 1.0 : 0.55,
-            child: SizedBox(
-              width: size,
-              height: size,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(size)
-                  )
-                )
-              )
-            )
-          )
-        )
-      );
+              opacity: index == i ? 1.0 : 0.55,
+              child: SizedBox(
+                  width: size,
+                  height: size,
+                  child: DecoratedBox(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(size))))))));
     }
     return indicators;
   }
 
   // 自动播放
   void autoPlay() {
-    _timer = Timer.periodic(Duration(milliseconds: widget.playDuration), (Timer timer) {
+    _timer = Timer.periodic(Duration(milliseconds: widget.playDuration),
+        (Timer timer) {
       if (widget.cycle) {
         if (_index == widget.itemCount) {
           _pageController.jumpToPage(0);
@@ -205,46 +201,37 @@ class WeSwipeState extends State<WeSwipe> {
   @override
   Widget build(BuildContext context) {
     Widget swipeWidget = PageView.builder(
-      itemCount: _list.length,
-      controller: _pageController,
-      onPageChanged: onChang,
-      itemBuilder:(BuildContext context, int index) {
-        return _list[index];
-      }
-    );
+        itemCount: _list.length,
+        controller: _pageController,
+        onPageChanged: onChang,
+        itemBuilder: (BuildContext context, int index) {
+          return _list[index];
+        });
 
     // 判断是否循环
     if (widget.cycle) {
       swipeWidget = Listener(
-        onPointerDown: onPointerDown,
-        onPointerUp: onPointerUp,
-        child: swipeWidget
-      );
+          onPointerDown: onPointerDown,
+          onPointerUp: onPointerUp,
+          child: swipeWidget);
     }
 
     // 判断是否显示指示
     if (widget.indicators) {
-      swipeWidget = Stack(
-        children: <Widget>[
-          swipeWidget,
-          // indicators
-          Positioned(
+      swipeWidget = Stack(children: <Widget>[
+        swipeWidget,
+        // indicators
+        Positioned(
             left: 0,
             right: 0,
             bottom: 12.0,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: renderIndicators(widget.cycle ? _index - 1 : _index)
-            )
-          )
-        ]
-      );
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: renderIndicators(widget.cycle ? _index - 1 : _index)))
+      ]);
     }
 
     return SizedBox(
-      width: widget.width,
-      height: widget.height,
-      child: swipeWidget
-    );
+        width: widget.width, height: widget.height, child: swipeWidget);
   }
 }

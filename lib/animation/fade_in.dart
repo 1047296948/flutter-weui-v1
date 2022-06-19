@@ -7,14 +7,14 @@ class FadeIn extends StatefulWidget {
   final autoPlay;
   final AnimationController controller;
 
-  FadeIn({
-    key,
-    @required this.child,
-    this.duration = 250,
-    this.listener,
-    this.autoPlay = true,
-    this.controller
-  }) : super(key: key);
+  FadeIn(
+      {key,
+      @required this.child,
+      this.duration = 250,
+      this.listener,
+      this.autoPlay = true,
+      this.controller})
+      : super(key: key);
 
   @override
   FadeInState createState() => FadeInState();
@@ -41,15 +41,10 @@ class FadeInState extends State<FadeIn> with SingleTickerProviderStateMixin {
       controller = widget.controller;
     } else {
       controller = AnimationController(
-        vsync: this,
-        duration: Duration(
-          milliseconds: widget.duration
-        )
-      );
+          vsync: this, duration: Duration(milliseconds: widget.duration));
     }
 
-    animation = Tween(begin: 0.0, end: 1.0)
-      .animate(controller)
+    animation = Tween(begin: 0.0, end: 1.0).animate(controller)
       ..addListener(() {
         setState(() => null);
       });
@@ -65,9 +60,6 @@ class FadeInState extends State<FadeIn> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: animation.value,
-      child: widget.child
-    );
+    return Opacity(opacity: animation.value, child: widget.child);
   }
 }

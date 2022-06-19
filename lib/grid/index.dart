@@ -5,14 +5,13 @@ class WeGrid extends StatefulWidget {
   final int itemCount;
   final Widget Function(int index) itemBuilder;
   final int count;
-  final BorderSide border;
+  final BorderSide? border;
 
-  WeGrid({
-    @required this.itemCount,
-    @required this.itemBuilder,
-    this.count = 3,
-    this.border
-  });
+  WeGrid(
+      {required this.itemCount,
+      required this.itemBuilder,
+      this.count = 3,
+      this.border});
 
   @override
   WeGridState createState() => WeGridState();
@@ -21,8 +20,9 @@ class WeGrid extends StatefulWidget {
 class WeGridState extends State<WeGrid> {
   GlobalKey _boxKey = GlobalKey();
   double _itemWidth = 0.0;
+
   // 边框
-  BorderSide border;
+  late BorderSide border;
 
   WeGridState() {
     WidgetsBinding.instance.addPostFrameCallback(init);
@@ -33,13 +33,14 @@ class WeGridState extends State<WeGrid> {
     super.didChangeDependencies();
     // 边框
     final Color borderColor = WeUi.getTheme(context).defaultBorderColor;
-    final BorderSide _defaultBorder = BorderSide(width: 0.8, color: borderColor);
-    border = widget.border == null ? _defaultBorder : widget.border;
+    final BorderSide _defaultBorder =
+        BorderSide(width: 0.8, color: borderColor);
+    border = widget.border == null ? _defaultBorder : widget.border!;
   }
 
   void init(time) {
     setState(() {
-      _itemWidth = _boxKey.currentContext.size.width / widget.count;
+      _itemWidth = _boxKey.currentContext!.size!.width / widget.count;
     });
   }
 
@@ -58,33 +59,23 @@ class WeGridState extends State<WeGrid> {
         final int eq = (rowIndex * widget.count) + index;
         if (eq <= widget.itemCount - 1) {
           list.add(SizedBox(
-            width: _itemWidth,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                  top: rowIndex == 0 ? border : BorderSide.none,
-                  right: border,
-                  bottom: border,
-                  left: index == 0 ? border : BorderSide.none
-                )
-              ),
-              child: widget.itemBuilder((rowIndex * widget.count) + index)
-            )
-          ));
+              width: _itemWidth,
+              child: DecoratedBox(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border(
+                          top: rowIndex == 0 ? border : BorderSide.none,
+                          right: border,
+                          bottom: border,
+                          left: index == 0 ? border : BorderSide.none)),
+                  child:
+                      widget.itemBuilder((rowIndex * widget.count) + index))));
         }
       }
 
-      children.add(Row(
-        children: list
-      ));
+      children.add(Row(children: list));
     }
 
-    return SizedBox(
-      key: _boxKey,
-      child: Column(
-        children: children
-      )
-    );
+    return SizedBox(key: _boxKey, child: Column(children: children));
   }
 }

@@ -5,18 +5,16 @@ class NotifyWidget extends StatefulWidget {
   final Color? color;
   final Widget child;
 
-  NotifyWidget({
-    key,
-    this.color,
-    required this.child
-  }) : super(key: key);
+  NotifyWidget({key, this.color, required this.child}) : super(key: key);
 
   @override
   NotifyWidgetState createState() => NotifyWidgetState();
 }
 
-class NotifyWidgetState extends State<NotifyWidget> with TickerProviderStateMixin {
+class NotifyWidgetState extends State<NotifyWidget>
+    with TickerProviderStateMixin {
   late AnimationController controller;
+
   //高度动画
   late Animation<double> offsetAnimation;
 
@@ -27,19 +25,12 @@ class NotifyWidgetState extends State<NotifyWidget> with TickerProviderStateMixi
   }
 
   // 初始化动画
-  void initAnimation () {
-    controller = AnimationController(
-      duration: Duration(milliseconds: 150),
-      vsync: this
-    );
+  void initAnimation() {
+    controller =
+        AnimationController(duration: Duration(milliseconds: 150), vsync: this);
 
     offsetAnimation = Tween<double>(begin: -1, end: 0)
-      .animate(
-        CurvedAnimation(
-          parent: controller,
-          curve: Curves.ease
-        )
-      )
+        .animate(CurvedAnimation(parent: controller, curve: Curves.ease))
       ..addListener(() {
         this.setState(() {});
       });
@@ -52,43 +43,30 @@ class NotifyWidgetState extends State<NotifyWidget> with TickerProviderStateMixi
     await controller.reverse();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned(
+    return Stack(children: [
+      Positioned(
           left: 0,
           top: 0,
           right: 0,
-          child:FractionalTranslation(
-            translation: Offset(0, offsetAnimation.value),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: widget.color
-              ),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: MediaQueryData.fromWindow(window).padding.top + 15,
-                  bottom: 15,
-                  left: 15,
-                  right: 15
-                ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: DefaultTextStyle(
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16
-                    ),
-                    child: widget.child
-                  )
-                )
-              )
-            )
-          )
-        )
-      ]
-    );
+          child: FractionalTranslation(
+              translation: Offset(0, offsetAnimation.value),
+              child: DecoratedBox(
+                  decoration: BoxDecoration(color: widget.color),
+                  child: Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQueryData.fromWindow(window).padding.top +
+                              15,
+                          bottom: 15,
+                          left: 15,
+                          right: 15),
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: DefaultTextStyle(
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                              child: widget.child))))))
+    ]);
   }
 }

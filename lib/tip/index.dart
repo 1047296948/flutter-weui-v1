@@ -67,7 +67,7 @@ class _WeTipWidget extends StatelessWidget {
   late Offset _offset;
   late double _top;
   late double _left;
-  late  Offset _triangleOffset;
+  late Offset _triangleOffset;
   late double _triangleTop;
   late double _triangleLeft;
   late double _angle;

@@ -48,18 +48,25 @@ class WeCells extends StatelessWidget {
 class WeCell extends StatelessWidget {
   // label
   final Widget? label;
+
   // 内容
   final Widget? content;
+
   // footer
   final Widget? footer;
+
   // 对齐方式
   final Alignment align;
+
   // 间距
   final double spacing;
+
   // 最小高度
   final double minHeight;
+
   // 点击
   final void Function()? onClick;
+
   // 长按
   final void Function()? onLongPress;
 
@@ -77,7 +84,7 @@ class WeCell extends StatelessWidget {
 
   // 点击
   void onTap() {
-    if(onClick is Function){
+    if (onClick is Function) {
       onClick!();
     }
   }
@@ -97,7 +104,7 @@ class WeCell extends StatelessWidget {
         children.add(
             Expanded(flex: 1, child: Align(alignment: align, child: content)));
       }
-    } else if (content is Widget){
+    } else if (content is Widget) {
       children = [Expanded(flex: 1, child: content!)];
     }
 

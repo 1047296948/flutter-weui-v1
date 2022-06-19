@@ -4,41 +4,45 @@ import '../icon/index.dart';
 
 class WeCheckboxGroup<T> extends StatefulWidget {
   // 最大选中数限制
-  final int max;
+  final int? max;
+
   // 默认值
-  final List<T> defaultValue;
+  final List<T>? defaultValue;
+
   // 当前值
-  final List<T> value;
+  final List<T>? value;
+
   // 点击时触发
-  final void Function(List<T>) onChange;
+  final void Function(List<T>)? onChange;
+
   // 内容
   final Widget child;
 
-  WeCheckboxGroup({
-    this.max,
-    this.defaultValue,
-    this.value,
-    this.onChange,
-    @required this.child
-  });
+  WeCheckboxGroup(
+      {this.max,
+      this.defaultValue,
+      this.value,
+      this.onChange,
+      required this.child});
 
   @override
   WeCheckboxGroupState createState() => WeCheckboxGroupState<T>();
 }
 
-class WeCheckboxGroupState<T> extends State<WeCheckboxGroup> {
-  List<T> value = [];
+class WeCheckboxGroupState<T> extends State<WeCheckboxGroup<T>> {
+  List<T>? value = [];
 
   @override
   void initState() {
     super.initState();
     // 非受控组件才能使用defaultValue，受控组件直接使用value控制
-    final List<T> defaultValue = widget.defaultValue == null ? [] : widget.defaultValue;
-    value = widget.value == null ? defaultValue : widget.value;
+    final List<T> defaultValue =
+        widget.defaultValue == null ? [] : widget.defaultValue!;
+    value = widget.value == null ? defaultValue : widget.value!;
   }
 
   @override
-  void didUpdateWidget(WeCheckboxGroup oldWidget) {
+  void didUpdateWidget(WeCheckboxGroup<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
       this.setState(() {
@@ -50,7 +54,7 @@ class WeCheckboxGroupState<T> extends State<WeCheckboxGroup> {
   void onChange(T id) {
     // 拷贝
     final List<T> newValue = [];
-    newValue.addAll(value);
+    if (value != null) newValue.addAll(value!);
 
     // 判断是否已经存在
     if (newValue.indexOf(id) >= 0) {
@@ -66,7 +70,7 @@ class WeCheckboxGroupState<T> extends State<WeCheckboxGroup> {
       });
     }
 
-    if (widget.onChange is Function) widget.onChange(newValue);
+    if (widget.onChange is Function) widget.onChange!(newValue);
   }
 
   @override
@@ -81,15 +85,17 @@ class WeCheckboxGroupState<T> extends State<WeCheckboxGroup> {
 class WeCheckbox<T> extends StatefulWidget {
   // 禁用状态
   final bool disabled;
+
   // 选中的value
   final T value;
+
   // 内容
   final Widget child;
 
   WeCheckbox({
     this.disabled = false,
-    @required this.value,
-    @required this.child,
+    required this.value,
+    required this.child,
   });
 
   @override
@@ -102,8 +108,8 @@ class WeCheckboxState extends State<WeCheckbox> {
 
   void toggleChecked() {
     final checkboxGroup = CheckboxGroupScope.of(context).checkboxGroup;
-    final int max = checkboxGroup.widget.max;
-    if (max != null && checkboxGroup.value.length >= max && !isChecked) {
+    final int? max = checkboxGroup.widget.max;
+    if (max != null && checkboxGroup.value!.length >= max && !isChecked) {
       return;
     }
 
@@ -115,31 +121,23 @@ class WeCheckboxState extends State<WeCheckbox> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final CheckboxGroupScope group = CheckboxGroupScope.of(context);
-    isChecked = group.checkboxGroup.value.indexOf(widget.value) >= 0;
+    isChecked = group.checkboxGroup.value!.indexOf(widget.value) >= 0;
   }
 
   Map<String, Color> _getColor() {
     final WeTheme theme = WeUi.getTheme(context);
     final group = CheckboxGroupScope.of(context).checkboxGroup;
-    final int max = group.widget.max;
+    final int? max = group.widget.max;
     // 判断是否到达最大限制
-    final bool isMax = max == null ? false : group.value.length >= max && !isChecked;
+    final bool isMax =
+        max == null ? false : group.value!.length >= max && !isChecked;
 
     if (widget.disabled || isMax) {
-      return {
-        'borderColor': Color(0xffd8d8d8),
-        'bgColor': Color(0xfff8f8f8)
-      };
+      return {'borderColor': Color(0xffd8d8d8), 'bgColor': Color(0xfff8f8f8)};
     } else if (isChecked) {
-      return {
-        'borderColor': theme.primaryColor,
-        'bgColor': theme.primaryColor
-      };
+      return {'borderColor': theme.primaryColor, 'bgColor': theme.primaryColor};
     } else {
-      return {
-        'borderColor': theme.defaultBorderColor,
-        'bgColor': Colors.white
-      };
+      return {'borderColor': theme.defaultBorderColor, 'bgColor': Colors.white};
     }
   }
 
@@ -147,63 +145,44 @@ class WeCheckboxState extends State<WeCheckbox> {
   Widget build(BuildContext context) {
     final Map<String, Color> colors = _getColor();
 
-    final Widget child = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Stack(
-          children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: colors['bgColor'],
-                border: Border.all(width: 1, color: colors['borderColor']),
-                borderRadius: BorderRadius.all(Radius.circular(2.0)),
-              ),
-              child: SizedBox(
-                width: _iconBoxSize,
-                height: _iconBoxSize
-              ),
-            ),
-            Positioned(
-              top: 1.4,
-              right: 0,
-              left: 0,
-              child: Align(
+    final Widget child = Row(mainAxisSize: MainAxisSize.min, children: [
+      Stack(children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: colors['bgColor'],
+            border: Border.all(width: 1, color: colors['borderColor']!),
+            borderRadius: BorderRadius.all(Radius.circular(2.0)),
+          ),
+          child: SizedBox(width: _iconBoxSize, height: _iconBoxSize),
+        ),
+        Positioned(
+            top: 1.4,
+            right: 0,
+            left: 0,
+            child: Align(
                 alignment: Alignment.topCenter,
                 child: Transform.scale(
-                  scale: isChecked ? 1 : 0,
-                  child: Icon(WeIcons.hook, size: 14, color: widget.disabled ? Color(0xffd8d8d8) : Colors.white)
-                )
-              )
-            )
-          ]
-        ),
-        DefaultTextStyle(
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.black
-          ),
+                    scale: isChecked ? 1 : 0,
+                    child: Icon(WeIcons.hook,
+                        size: 14,
+                        color: widget.disabled
+                            ? Color(0xffd8d8d8)
+                            : Colors.white))))
+      ]),
+      DefaultTextStyle(
+          style: TextStyle(fontSize: 16, color: Colors.black),
           child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: Colors.transparent
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(left: 6),
-              child: widget.child
-            )
-          )
-        )
-      ]
-    );
+              decoration: BoxDecoration(color: Colors.transparent),
+              child: Padding(
+                  padding: EdgeInsets.only(left: 6), child: widget.child)))
+    ]);
 
     // 判断是否禁用
     if (widget.disabled) {
       return child;
     }
 
-    return GestureDetector(
-      onTap: toggleChecked,
-      child: child
-    );
+    return GestureDetector(onTap: toggleChecked, child: child);
   }
 }
 
@@ -211,13 +190,13 @@ class CheckboxGroupScope extends InheritedWidget {
   final WeCheckboxGroupState checkboxGroup;
 
   CheckboxGroupScope({
-    Key key,
+    Key? key,
     child,
-    this.checkboxGroup,
+    required this.checkboxGroup,
   }) : super(key: key, child: child);
 
   static CheckboxGroupScope of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<CheckboxGroupScope>();
+    return context.dependOnInheritedWidgetOfExactType<CheckboxGroupScope>()!;
   }
 
   @override

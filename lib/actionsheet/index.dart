@@ -8,27 +8,25 @@ typedef _Close = Function();
 // change
 typedef _onChange = Function(String index);
 // 安卓
-typedef WeActionsheetAndroid = Function({
-  @required List<WeActionsheetItem> options,
-  _Close onClose,
-  bool maskClosable,
-  _onChange onChange
-});
+typedef WeActionsheetAndroid = Function(
+    {@required List<WeActionsheetItem> options,
+    _Close onClose,
+    bool maskClosable,
+    _onChange onChange});
 // ios
-typedef WeActionsheetIos = Function({
-  dynamic title,
-  @required List<WeActionsheetItem> options,
-  bool maskClosable,
-  dynamic cancelButton,
-  _Close onClose,
-  _onChange onChange
-});
+typedef WeActionsheetIos = Function(
+    {dynamic title,
+    @required List<WeActionsheetItem> options,
+    bool maskClosable,
+    dynamic cancelButton,
+    _Close onClose,
+    _onChange onChange});
 
 // WeActionsheet
 class WeActionsheet {
   // 安卓样式
   static WeActionsheetAndroid android(BuildContext context) {
-    return ({ maskClosable = true, onClose, onChange, options }) {
+    return ({maskClosable = true, onClose, onChange, options}) {
       final GlobalKey widgetKey = GlobalKey();
       Function remove;
 
@@ -50,25 +48,29 @@ class WeActionsheet {
       }
 
       remove = createOverlayEntry(
-        context: context,
-        backIntercept: true,
-        child: AndroidWidget(
-          key: widgetKey,
-          maskClosable: maskClosable,
-          close: hide,
-          onChange: itemClick,
-          childer: options
-        ),
-        willPopCallback: () {
-          (widgetKey.currentState as AndroidWidgetState).close();
-        }
-      );
+          context: context,
+          backIntercept: true,
+          child: AndroidWidget(
+              key: widgetKey,
+              maskClosable: maskClosable,
+              close: hide,
+              onChange: itemClick,
+              childer: options),
+          willPopCallback: () {
+            (widgetKey.currentState as AndroidWidgetState).close();
+          });
     };
   }
 
   // ios 样式
   static WeActionsheetIos ios(BuildContext context) {
-    return ({ title, options, maskClosable = true, cancelButton, onClose, onChange }) {
+    return (
+        {title,
+        options,
+        maskClosable = true,
+        cancelButton,
+        onClose,
+        onChange}) {
       final GlobalKey widgetKey = GlobalKey();
       Function remove;
 
@@ -90,21 +92,19 @@ class WeActionsheet {
       }
 
       remove = createOverlayEntry(
-        context: context,
-        backIntercept: true,
-        child: IosWidget(
-        key: widgetKey,
-          title: title,
-          cancelButton: cancelButton,
-          maskClosable: maskClosable,
-          close: hide,
-          onChange: itemClick,
-          childer: options
-        ),
-        willPopCallback: () {
-          (widgetKey.currentState as IosWidgetState).close();
-        }
-      );
+          context: context,
+          backIntercept: true,
+          child: IosWidget(
+              key: widgetKey,
+              title: title,
+              cancelButton: cancelButton,
+              maskClosable: maskClosable,
+              close: hide,
+              onChange: itemClick,
+              childer: options),
+          willPopCallback: () {
+            (widgetKey.currentState as IosWidgetState).close();
+          });
     };
   }
 }
@@ -113,8 +113,5 @@ class WeActionsheetItem {
   final label;
   final String value;
 
-  WeActionsheetItem({
-    @required this.label,
-    this.value
-  });
+  WeActionsheetItem({@required this.label, this.value});
 }

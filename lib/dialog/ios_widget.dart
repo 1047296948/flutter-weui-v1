@@ -11,17 +11,14 @@ final double _padding = boxPadding - 2;
 class IosWidget extends StatefulWidget {
   // 标题
   final dynamic title;
+
   // 内容
   final dynamic message;
+
   // 按钮
   final dynamic buttons;
 
-  IosWidget({
-    key,
-    this.title,
-    this.message,
-    this.buttons
-  }) : super(key: key);
+  IosWidget({key, this.title, this.message, this.buttons}) : super(key: key);
 
   @override
   IosWidgetState createState() => IosWidgetState();
@@ -30,8 +27,9 @@ class IosWidget extends StatefulWidget {
 class IosWidgetState extends State<IosWidget> {
   final GlobalKey _fadeInKey = GlobalKey();
   final GlobalKey _scaleKey = GlobalKey();
-  final _intervalSize = 1 / MediaQueryData.fromWindow(ui.window).devicePixelRatio;
-  WeTheme theme;
+  final _intervalSize =
+      1 / MediaQueryData.fromWindow(ui.window).devicePixelRatio;
+  late WeTheme theme;
 
   @override
   void didChangeDependencies() {
@@ -53,46 +51,30 @@ class IosWidgetState extends State<IosWidget> {
 
       // 判断是个第一个 - 添加间隔
       if (!isOne) {
-        children.add(
-          SizedBox(
+        children.add(SizedBox(
             width: _intervalSize,
             height: footerHeight,
             child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: theme.defaultBorderColor
-              )
-            )
-          )
-        );
+                decoration: BoxDecoration(color: theme.defaultBorderColor))));
       }
 
       // 添加
-      children.add(
-        Expanded(
+      children.add(Expanded(
           flex: 1,
           child: InkWell(
-            onTap: item['onClick'],
-            child: Align(
-              alignment: Alignment.center,
-              child: DefaultTextStyle(
-                style: TextStyle(
-                  fontSize: _titleSize,
-                  color: widget.buttons.length > 1 && isOne ? Color(0xff555555) : theme.primaryColor
-                ),
-                child: item['widget']
-              )
-            )
-          )
-        )
-      );
+              onTap: item['onClick'],
+              child: Align(
+                  alignment: Alignment.center,
+                  child: DefaultTextStyle(
+                      style: TextStyle(
+                          fontSize: _titleSize,
+                          color: widget.buttons.length > 1 && isOne
+                              ? Color(0xff555555)
+                              : theme.primaryColor),
+                      child: item['widget'])))));
     }
 
-    return SizedBox(
-      height: footerHeight,
-      child: Row(
-        children: children
-      )
-    );
+    return SizedBox(height: footerHeight, child: Row(children: children));
   }
 
   // 反向执行动画
@@ -107,15 +89,11 @@ class IosWidgetState extends State<IosWidget> {
     final List<Widget> children = [
       // 内容
       Padding(
-        padding: EdgeInsets.only(left: _padding, right: _padding, bottom: 16.0),
-        child: DefaultTextStyle(
-          style: TextStyle(
-            fontSize: 16.0,
-            color: Color(0xff808080)
-          ),
-          child: widget.message
-        )
-      ),
+          padding:
+              EdgeInsets.only(left: _padding, right: _padding, bottom: 16.0),
+          child: DefaultTextStyle(
+              style: TextStyle(fontSize: 16.0, color: Color(0xff808080)),
+              child: widget.message)),
       Divider(height: 1.0, color: theme.defaultBorderColor),
       // 按钮
       _renderButton()
@@ -123,24 +101,22 @@ class IosWidgetState extends State<IosWidget> {
 
     // 标题
     if (widget.title != null) {
-      children.insert(0, Padding(
-        padding: EdgeInsets.only(bottom: 8.0),
-        child: DefaultTextStyle(
-          style: TextStyle(
-            fontSize: _titleSize,
-            color: Colors.black,
-            fontWeight: FontWeight.w500
-          ),
-          child: widget.title
-        )
-      ));
+      children.insert(
+          0,
+          Padding(
+              padding: EdgeInsets.only(bottom: 8.0),
+              child: DefaultTextStyle(
+                  style: TextStyle(
+                      fontSize: _titleSize,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500),
+                  child: widget.title)));
     }
 
     return layoutHoc(
-      scaleKey: _scaleKey,
-      fadeInKey: _fadeInKey,
-      maskColor: theme.maskColor,
-      children: children
-    );
+        scaleKey: _scaleKey,
+        fadeInKey: _fadeInKey,
+        maskColor: theme.maskColor,
+        children: children);
   }
 }

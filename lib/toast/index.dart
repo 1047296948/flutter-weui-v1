@@ -43,7 +43,7 @@ class WeToast {
   // 信息提示
   static Info info(BuildContext context) {
     return (message, {int? duration, WeToastInfoAlign? align, distance = 100.0 }) async {
-      final WeConfig config = WeUi.getConfig(context);
+      final WeConfig config = WeUi.getConfig(context)!;
       // 转换
       final Widget? messageWidget = toTextWidget(message, 'message');
       final remove = createOverlayEntry(
@@ -64,7 +64,7 @@ class WeToast {
   // 加载中
   static Loading loading(BuildContext context) {
     Close show({ message, duration, mask = true, icon }) {
-      final int toastLoadingDuration = WeUi.getConfig(context).toastLoadingDuration;
+      final int toastLoadingDuration = WeUi.getConfig(context)!.toastLoadingDuration;
 
       return WeToast.toast(context)(
         icon: Rotating(icon == null ? _loadingIcon : icon, duration: 800),
@@ -80,7 +80,7 @@ class WeToast {
   // 成功
   static Success success(BuildContext context) {
     return ({ message,int? duration, mask = true, icon = _successIcon,Function? onClose }) {
-      final int toastSuccessDuration = WeUi.getConfig(context).toastSuccessDuration;
+      final int toastSuccessDuration = WeUi.getConfig(context)!.toastSuccessDuration;
       WeToast.toast(context)(
         icon: icon,
         mask: mask,

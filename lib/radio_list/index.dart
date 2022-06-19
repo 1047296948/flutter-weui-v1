@@ -6,7 +6,7 @@ import '../theme/index.dart';
 import '../utils.dart';
 
 // onChane
-typedef changeBack = void Function(String value);
+typedef _ChangeBack = void Function(String value);
 // icon size
 final double _iconSize = 24.0;
 
@@ -14,22 +14,22 @@ class WeRadiolist extends StatefulWidget {
   // 选项
   final List<WeRadiolistItem> children;
   // value
-  final String value;
+  final String? value;
   // defaultValue
-  final String defaultValue;
+  final String? defaultValue;
   // 排列方式
   final String align;
   // onChange
-  final changeBack onChange;
+  final _ChangeBack? onChange;
   // icon padding间距
   final double padding = 8.0;
   // left padding
-  double _leftPadding;
+  late double _leftPadding;
   // right padding
-  double _rightPadding;
+  late double _rightPadding;
 
   WeRadiolist({
-    @required this.children,
+    required this.children,
     this.value,
     this.defaultValue,
     this.align = 'right',
@@ -50,7 +50,7 @@ class WeRadiolist extends StatefulWidget {
 
 class _RadiolistState extends State<WeRadiolist> {
   dynamic checked;
-  Color primaryColor;
+  late Color primaryColor;
 
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _RadiolistState extends State<WeRadiolist> {
     }
     // 调用change
     if (widget.onChange is Function) {
-      widget.onChange(value);
+      widget.onChange!(value);
     }
   }
 
@@ -157,8 +157,8 @@ class WeRadiolistItem {
   final bool disabled;
 
   WeRadiolistItem({
-    @required this.label,
-    @required this.value,
+    required this.label,
+    required this.value,
     this.disabled = false
   });
 }

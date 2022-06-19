@@ -6,14 +6,14 @@ typedef void OnChange(List<String> value);
 class  WePickerView extends StatefulWidget {
   final int itemCount;
   final double itemHeight;
-  final OnChange onChange;
+  final OnChange? onChange;
   final List<List<WePickerItem>> options;
 
   WePickerView({
     itemCount = 5,
     this.itemHeight = 42,
     this.onChange,
-    @required this.options
+    required this.options
   }) : assert(itemCount % 2 == 1), this.itemCount = itemCount;
 
   @override
@@ -22,11 +22,11 @@ class  WePickerView extends StatefulWidget {
 
 class WePickerViewState extends State<WePickerView> {
   final Map<int, double> tops = {};
-  double boxHeight;
-  double borderTop;
-  double _startY;
+  late double boxHeight;
+  late double borderTop;
+  late double _startY;
   double _endY = 0;
-  WeTheme theme;
+  late WeTheme theme;
 
   @override
   initState() {
@@ -45,7 +45,7 @@ class WePickerViewState extends State<WePickerView> {
 
   onVerticalDragDown(DragDownDetails _, int index) {
     _startY = _.globalPosition.dy;
-    _endY = tops[index] == null ? 0 : tops[index];
+    _endY = tops[index] == null ? 0 : tops[index]!;
   }
 
   onVerticalDragUpdate(DragUpdateDetails _, int index) {
@@ -55,19 +55,19 @@ class WePickerViewState extends State<WePickerView> {
   }
 
   onVerticalDragEnd(int index) {
-    final double itemHalfHiehgt = widget.itemHeight / 2;
+    final double itemHalfHeight = widget.itemHeight / 2;
     final double colHeight = widget.options[index].length * widget.itemHeight;
-    final double currentTop = -tops[index];
+    final double currentTop = -tops[index]!;
     double top;
 
     // 判断边界值
-    if (currentTop <= itemHalfHiehgt) {
+    if (currentTop <= itemHalfHeight) {
       top = 0;
-    } else if (currentTop >= colHeight - itemHalfHiehgt) {
+    } else if (currentTop >= colHeight - itemHalfHeight) {
       top = -(colHeight - widget.itemHeight);
     } else {
-      int number = (tops[index] ~/ widget.itemHeight);
-      number = number + (-tops[index] % widget.itemHeight >= itemHalfHiehgt ? -1 : 0);
+      int number = (tops[index]! ~/ widget.itemHeight);
+      number = number + (-tops[index]! % widget.itemHeight >= itemHalfHeight ? -1 : 0);
       top = number * widget.itemHeight;
     }
 
@@ -195,7 +195,7 @@ class WePickerItem {
   final String value;
 
   WePickerItem({
-    @required this.label,
-    @required this.value
+    required this.label,
+    required this.value
   });
 }

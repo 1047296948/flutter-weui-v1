@@ -6,7 +6,7 @@ import '../theme/index.dart';
 import '../utils.dart';
 
 // onChane
-typedef OnChangeBack = void Function(List<String> value);
+typedef _OnChangeBack = void Function(List<String> value);
 
 // icon size
 final double _iconSize = 22.0;
@@ -15,13 +15,13 @@ class WeChecklist extends StatefulWidget {
   // 选项
   final List<WeChecklistItem> children;
   // value
-  final List<String> value;
+  final List<String>? value;
   // 默认选中
-  final List<String> defaultValue;
+  final List<String>? defaultValue;
   // 排列方式
   final String align;
   // onChange
-  final OnChangeBack onChange;
+  final _OnChangeBack? onChange;
   // max
   final int max;
   // icon padding间距
@@ -29,12 +29,12 @@ class WeChecklist extends StatefulWidget {
   // 是否有上下边框
   final bool boxBorder;
   // left padding
-  double _leftPadding;
+  late double _leftPadding;
   // right padding
-  double _rightPadding;
+  late double _rightPadding;
 
   WeChecklist({
-    @required this.children,
+    required this.children,
     this.value,
     this.defaultValue,
     this.boxBorder = false,
@@ -57,12 +57,12 @@ class WeChecklist extends StatefulWidget {
 
 class _ChecklistState extends State<WeChecklist> {
   List<String> checkedList = [];
-  WeTheme theme;
+  late WeTheme theme;
 
   @override
   void initState() {
     super.initState();
-    this.checkedList = widget.defaultValue == null ? [] : widget.defaultValue;
+    this.checkedList = widget.defaultValue == null ? [] : widget.defaultValue!;
   }
 
   @override
@@ -72,7 +72,7 @@ class _ChecklistState extends State<WeChecklist> {
   }
 
   List<String> getCheckedValue() {
-    return widget.value == null ? checkedList : widget.value;
+    return widget.value == null ? checkedList : widget.value!;
   }
 
   // change
@@ -93,7 +93,7 @@ class _ChecklistState extends State<WeChecklist> {
     }
     // 调用change
     if (widget.onChange is Function) {
-      widget.onChange(checkedList);
+      widget.onChange!(checkedList);
     }
   }
 
@@ -187,8 +187,8 @@ class WeChecklistItem {
   final bool disabled;
 
   WeChecklistItem({
-    @required this.label,
-    @required this.value,
+    required this.label,
+    required this.value,
     this.disabled = false
   });
 }

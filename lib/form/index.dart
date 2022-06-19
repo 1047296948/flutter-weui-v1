@@ -12,11 +12,11 @@ class WeForm extends StatefulWidget {
     this.boxBorder = true,
     this.spacing = labelSpacing,
     this.height = 50,
-    @required this.children
+    required this.children
   }) : super(key: key);
 
-  static WeFormState of(BuildContext context) {
-    final WeFormScope scope = context.dependOnInheritedWidgetOfExactType<WeFormScope>();
+  static WeFormState? of(BuildContext context) {
+    final WeFormScope? scope = context.dependOnInheritedWidgetOfExactType<WeFormScope>();
     return scope?.state;
   }
 
@@ -52,17 +52,17 @@ class WeFormState extends State<WeForm> {
 }
 
 class WeFormScope extends InheritedWidget {
-  final WeFormState state;
-  final formValue;
+  final WeFormState? state;
+  final dynamic formValue;
 
   WeFormScope({
-    Key key,
+    Key? key,
     this.state,
     this.formValue,
-    Widget child
+    required Widget child
   }) : super(key: key, child: child);
 
-  static WeFormScope of(BuildContext context) {
+  static WeFormScope? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<WeFormScope>();
   }
 

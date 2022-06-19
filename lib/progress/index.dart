@@ -14,11 +14,11 @@ class WeProgress extends StatefulWidget {
   // 进度条样式
   final BoxDecoration decoration;
   // 高亮样式
-  final BoxDecoration higDecoration;
+  final BoxDecoration? higDecoration;
   // before Widget
-  final Widget beforeWidget;
+  final Widget? beforeWidget;
   // before Widget
-  final Widget afterWidget;
+  final Widget? afterWidget;
 
   WeProgress({
     this.value = 0.0,
@@ -38,7 +38,7 @@ class WeProgressState extends State<WeProgress> with SingleTickerProviderStateMi
   double _boxWidth = 0.0;
   double _curWidth = 0;
   // 高亮样式
-  BoxDecoration _higDecoration;
+  late BoxDecoration _higDecoration;
 
   WeProgressState() {
     WidgetsBinding.instance.addPostFrameCallback(init);
@@ -50,12 +50,12 @@ class WeProgressState extends State<WeProgress> with SingleTickerProviderStateMi
     // 高亮修饰
     _higDecoration = widget.higDecoration == null ? BoxDecoration(
       color: WeUi.getTheme(context).primaryColor
-    ) : widget.higDecoration;
+    ) : widget.higDecoration!;
   }
 
   void init(time) {
     setState(() {
-      _boxWidth = _boxKey.currentContext.size.width;  
+      _boxWidth = _boxKey.currentContext!.size!.width;
     });
   }
 
@@ -101,11 +101,11 @@ class WeProgressState extends State<WeProgress> with SingleTickerProviderStateMi
       ];
 
       if (widget.beforeWidget is Widget) {
-        children.insert(0, widget.beforeWidget);
+        children.insert(0, widget.beforeWidget!);
       }
 
       if (widget.afterWidget is Widget) {
-        children.add(widget.afterWidget);
+        children.add(widget.afterWidget!);
       }
 
       return Row(

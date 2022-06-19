@@ -3,7 +3,7 @@ import '../theme/index.dart';
 
 class WeSwitch extends StatefulWidget {
   // 颜色
-  final Color color;
+  final Color? color;
   // 大小
   final double size;
   // 选中状态
@@ -11,12 +11,12 @@ class WeSwitch extends StatefulWidget {
   // 禁用状态
   final bool disabled;
   // 点击变化的回调函
-  final Function(bool checked) onChange;
+  final Function(bool checked)? onChange;
 
   WeSwitch({
     this.color,
     this.size = 28.0,
-    this.checked,
+    this.checked = false,
     this.disabled = false,
     this.onChange
   });
@@ -26,27 +26,27 @@ class WeSwitch extends StatefulWidget {
 }
 
 class WeSwitchState extends State<WeSwitch> with TickerProviderStateMixin {
-  double _width;
-  double _height;
-  Color color;
+  late double _width;
+  late double _height;
+  late Color color;
   bool _open = false;
   // 动画
-  AnimationController controller;
-  Animation moveAnimation;
-  Animation colorAnimation;
+  late AnimationController controller;
+  late Animation moveAnimation;
+  late Animation colorAnimation;
 
   @override
   void initState() {
     super.initState();
     _width = widget.size * 2;
     _height = widget.size + 2;
-    _open = widget.checked == null ? false : widget.checked;
+    _open = widget.checked;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    color = widget.color == null ? WeUi.getTheme(context).primaryColor : widget.color;
+    color = (widget.color == null ? WeUi.getTheme(context).primaryColor : widget.color)!;
     // 初始化动画
     initAnimate();
   }
@@ -90,7 +90,7 @@ class WeSwitchState extends State<WeSwitch> with TickerProviderStateMixin {
       toggleChecked();
     }
     // onChange
-    if (widget.onChange is Function) widget.onChange(state);
+    if (widget.onChange is Function) widget.onChange!(state);
   }
 
   void toggleChecked() {

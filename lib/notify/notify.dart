@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 
 class NotifyWidget extends StatefulWidget {
-  final Color color;
+  final Color? color;
   final Widget child;
 
   NotifyWidget({
     key,
     this.color,
-    @required this.child
+    required this.child
   }) : super(key: key);
 
   @override
@@ -16,9 +16,9 @@ class NotifyWidget extends StatefulWidget {
 }
 
 class NotifyWidgetState extends State<NotifyWidget> with TickerProviderStateMixin {
-  AnimationController controller;
+  late AnimationController controller;
   //高度动画
-  Animation<double> offsetAnimation;
+  late Animation<double> offsetAnimation;
 
   @override
   void initState() {

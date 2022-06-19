@@ -4,11 +4,11 @@ import '../icon/index.dart';
 
 class WeRadioGroup<T> extends StatefulWidget {
   // 默认值
-  final T defaultValue;
+  final T? defaultValue;
   // 当前值
-  final T value;
+  final T? value;
   // 点击时触发
-  final void Function(T data) onChange;
+  final void Function(T data)? onChange;
   // 内容
   final Widget child;
 
@@ -16,7 +16,7 @@ class WeRadioGroup<T> extends StatefulWidget {
     this.defaultValue,
     this.value,
     this.onChange,
-    @required this.child
+    required this.child
   });
 
   @override
@@ -24,7 +24,7 @@ class WeRadioGroup<T> extends StatefulWidget {
 }
 
 class WeRadioGroupState<T> extends State<WeRadioGroup> {
-  T value;
+  T? value;
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class WeRadioGroupState<T> extends State<WeRadioGroup> {
     });
 
     // 调用onChange
-    if (widget.onChange is Function) widget.onChange(value);
+    if (widget.onChange is Function) widget.onChange!(value);
   }
 
   @override
@@ -71,8 +71,8 @@ class WeRadio<T> extends StatefulWidget {
 
   WeRadio({
     this.disabled = false,
-    @required this.value,
-    @required this.child,
+    required this.value,
+    required this.child,
   });
 
   @override
@@ -128,7 +128,7 @@ class WeRadioState extends State<WeRadio> {
             DecoratedBox(
               decoration: BoxDecoration(
                 color: colors['bgColor'],
-                border: Border.all(width: 1, color: colors['borderColor']),
+                border: Border.all(width: 1, color: colors['borderColor']!),
                 borderRadius: BorderRadius.all(Radius.circular(_iconBoxSize / 2)),
               ),
               child: SizedBox(
@@ -184,13 +184,13 @@ class RadioGroupScope extends InheritedWidget {
   final WeRadioGroupState radioGroup;
 
   RadioGroupScope({
-    Key key,
+    Key? key,
     child,
-    this.radioGroup,
+    required this.radioGroup,
   }) : super(key: key, child: child);
 
   static RadioGroupScope of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<RadioGroupScope>();
+    return context.dependOnInheritedWidgetOfExactType<RadioGroupScope>()!;
   }
 
   @override

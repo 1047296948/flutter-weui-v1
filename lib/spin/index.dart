@@ -13,14 +13,14 @@ class WeSpin extends StatelessWidget {
   // 显示状态
   final bool isShow;
   // 提示文字
-  final Widget tip;
+  final Widget? tip;
   // 内容
   final Widget child;
 
   WeSpin({
     this.isShow = true,
     this.tip,
-    this.child,
+    required this.child,
   });
 
   @override
@@ -44,7 +44,7 @@ class WeSpin extends StatelessWidget {
                 fontSize: 14,
                 color: Colors.black
               ),
-              child: tip,
+              child: tip!,
             ),
           ),
         ),

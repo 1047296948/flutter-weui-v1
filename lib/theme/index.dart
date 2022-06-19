@@ -14,55 +14,67 @@ final _defaultConfig = WeConfig();
 
 // 主题
 class WeTheme {
-    // 主色
+  // 主色
   final Color primaryColor;
-    // 主色禁用
+
+  // 主色禁用
   final Color primaryColorDisabled;
+
   // 警告色
   final Color warnColor;
+
   // 警告色禁用
   final Color warnColorDisabled;
+
   // 默认背景色
   final Color defaultBackgroundColor;
+
   // 默认边框色
   final Color defaultBorderColor;
+
   // 遮罩层颜色
   final Color maskColor;
 
-  WeTheme({
-    this.primaryColor = _primaryColor,
-    this.primaryColorDisabled = _primaryColorDisabled,
-    this.warnColor = _warnColor,
-    this.warnColorDisabled = _warnColorDisabled,
-    this.defaultBackgroundColor = _defaultBackgroundColor,
-    this.defaultBorderColor = _defaultBorderColor,
-    this.maskColor = _maskColor
-  });
+  WeTheme(
+      {this.primaryColor = _primaryColor,
+      this.primaryColorDisabled = _primaryColorDisabled,
+      this.warnColor = _warnColor,
+      this.warnColorDisabled = _warnColorDisabled,
+      this.defaultBackgroundColor = _defaultBackgroundColor,
+      this.defaultBorderColor = _defaultBorderColor,
+      this.maskColor = _maskColor});
 }
 
 // 配置
 class WeConfig {
   // toast 位置
   final WeToastInfoAlign toastInfoAlign;
+
   // toast info自动关闭时间
   final int toastInfoDuration;
+
   // toast loading关闭时间
   final int toastLoadingDuration;
+
   // toast success关闭时间
   final int toastSuccessDuration;
+
   // toast fail关闭时间
   final int toastFailDuration;
+
   // notify自动关闭时间
   final int notifyDuration;
+
   // notify成功关闭时间
   final int notifySuccessDuration;
+
   // notify错误关闭时间
   final int notifyErrorDuration;
 
   WeConfig({
     this.toastInfoAlign = WeToastInfoAlign.center,
     this.toastInfoDuration = 2500,
-    this.toastLoadingDuration,
+    this.toastLoadingDuration = 5000,
     this.toastSuccessDuration = 2500,
     this.toastFailDuration = 2500,
     this.notifyDuration = 3000,
@@ -72,30 +84,26 @@ class WeConfig {
 }
 
 class WeUi extends InheritedWidget {
-  final WeTheme theme;
-  final WeConfig config;
+  final WeTheme? theme;
+  final WeConfig? config;
 
-  WeUi({
-    Key key,
-    this.theme,
-    this.config,
-    Widget child
-  }) : super(key: key, child: child);
+  WeUi({Key? key, this.theme, this.config, required Widget child})
+      : super(key: key, child: child);
 
-  static WeUi of(BuildContext context) {
+  static WeUi? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<WeUi>();
   }
 
   // 获取主题配置
   static WeTheme getTheme(BuildContext context) {
-    final WeUi weui = WeUi.of(context);
-    return weui == null || weui.theme == null ? _defaultTheme : weui.theme;
+    final WeUi? weui = WeUi.of(context);
+    return weui != null && weui.theme != null ? weui.theme! : _defaultTheme;
   }
 
   // 获取全局配置
   static WeConfig getConfig(BuildContext context) {
-    final WeUi weui = WeUi.of(context);
-    return weui == null || weui.config == null ? _defaultConfig : weui.config;
+    final WeUi? weui = WeUi.of(context);
+    return weui != null && weui.config != null ? weui.config! : _defaultConfig;
   }
 
   @override

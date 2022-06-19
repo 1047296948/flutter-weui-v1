@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class WeSwipe extends StatefulWidget {
-  final GlobalKey key;
+  final GlobalKey? key;
   // 数量
   final int itemCount;
   // 渲染每个item
   final Widget Function(int index) itemBuilder;
   // 宽度
-  final double width;
+  final double? width;
   // 高度
-  final double height;
+  final double? height;
   // 默认展示
   final int defaultIndex;
   // 循环
@@ -26,12 +26,12 @@ class WeSwipe extends StatefulWidget {
   // 动画过度曲线
   final Curve curve;
   // 回调
-  final Function(int index) onChang;
+  final Function(int index)? onChang;
 
   WeSwipe({
     this.key,
-    @required this.itemCount,
-    @required this.itemBuilder,
+    required this.itemCount,
+    required this.itemBuilder,
     this.width,
     this.height,
     this.defaultIndex = 0,
@@ -49,9 +49,9 @@ class WeSwipe extends StatefulWidget {
 }
 
 class WeSwipeState extends State<WeSwipe> {
-  PageController _pageController;
-  int _index;
-  Timer _timer;
+  late PageController _pageController;
+  late int _index;
+  late Timer? _timer;
   List<Widget> children = [];
   List<Widget> _list = [];
 
@@ -117,8 +117,8 @@ class WeSwipeState extends State<WeSwipe> {
   }
 
   void onChang(int index) {
-    if (widget.onChang != null) {
-      widget.onChang(index);
+    if (widget.onChang is Function) {
+      widget.onChang!(index);
     }
 
     setState(() {

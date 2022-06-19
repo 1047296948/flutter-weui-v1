@@ -6,62 +6,79 @@ import '../icon/index.dart';
 class WeInput extends StatefulWidget {
   // key
   final Key key;
+
   // label
   final dynamic label;
+
   // 高度
   final double height;
+
   // 默认值
   final String defaultValue;
+
   // 最大行数
   final int maxLines;
+
   // 限制输入数量
   final int maxLength;
+
   // 提示文字
   final String hintText;
+
   // 光标
   final FocusNode focusNode;
+
   // footer
   final Widget footer;
+
   // 是否显示清除
   final bool clearable;
+
   // 文字对其方式
   final TextAlign textAlign;
+
   // 输入框类型
-  final TextInputType type;
+  final TextInputType textInputType;
+
   // 密码框
   final bool obscureText;
+
   // 样式
   final TextStyle style;
+
   // 是否自动获取光标
   final bool autofocus;
+
   // label宽度
   final double labelWidth;
+
   // TextInputAction
   final TextInputAction textInputAction;
+
   // onChange
   final Function(String value) onChange;
 
-  WeInput({
-    this.key,
-    label,
-    this.height = 48,
-    this.defaultValue = '',
-    this.maxLines = 1,
-    this.maxLength,
-    this.hintText,
-    this.focusNode,
-    this.footer,
-    this.clearable = false,
-    this.textAlign = TextAlign.start,
-    this.type = TextInputType.text,
-    this.obscureText = false,
-    this.style,
-    this.autofocus = false,
-    this.labelWidth = 80.0,
-    this.textInputAction,
-    this.onChange
-  }) : this.label = toTextWidget(label, 'label'),
-      super(key: key);
+  WeInput(
+      {this.key,
+      label,
+      this.height = 48,
+      this.defaultValue = '',
+      this.maxLines = 1,
+      this.maxLength,
+      this.hintText,
+      this.focusNode,
+      this.footer,
+      this.clearable = false,
+      this.textAlign = TextAlign.start,
+      this.textInputType = TextInputType.text,
+      this.obscureText = false,
+      this.style,
+      this.autofocus = false,
+      this.labelWidth = 80.0,
+      this.textInputAction,
+      this.onChange})
+      : this.label = toTextWidget(label, 'label'),
+        super(key: key);
 
   @override
   WeInputState createState() => WeInputState();
@@ -70,6 +87,7 @@ class WeInput extends StatefulWidget {
 class WeInputState extends State<WeInput> {
   final TextEditingController controller = TextEditingController();
   TextInputAction textInputAction;
+  TextInputType type;
 
   WeInputState() {
     _init();
@@ -78,11 +96,23 @@ class WeInputState extends State<WeInput> {
   @override
   void initState() {
     super.initState();
+    type = widget.textInputType;
     if (widget.textInputAction == null) {
-      textInputAction = widget.maxLines == 1 ? TextInputAction.search : TextInputAction.newline;
+      textInputAction =
+          widget.maxLines == 1 ? TextInputAction.go : TextInputAction.newline;
     } else {
       textInputAction = widget.textInputAction;
     }
+    if (widget.maxLines != 1 && textInputAction == TextInputAction.newline) {
+      //will override user's setting
+      type = TextInputType.multiline;
+    }
+    assert(
+      !(identical(textInputAction, TextInputAction.newline) &&
+          widget.maxLines != 1 &&
+          identical(type, TextInputType.text)),
+      'keyboardType must be TextInputType.multiline when using TextInputAction.newline on a multiline(maxLines > 1) TextField.',
+    );
   }
 
   // 初始化
@@ -118,23 +148,14 @@ class WeInputState extends State<WeInput> {
   Widget build(BuildContext context) {
     // 清除按钮
     final Widget clearWidget = GestureDetector(
-      onTap: _clearValue,
-      child: Container(
-        child: Icon(
-          WeIcons.clear,
-          color: Color(0xffc8c9cc),
-          size: 25.0
-        )
-      )
-    );
+        onTap: _clearValue,
+        child: Container(
+            child: Icon(WeIcons.clear, color: Color(0xffc8c9cc), size: 25.0)));
 
     // label
     Widget label;
     if (widget.label is Widget) {
-      label = Container(
-        width: widget.labelWidth,
-        child: widget.label
-      );
+      label = Container(width: widget.labelWidth, child: widget.label);
     }
 
     // footer
@@ -146,34 +167,27 @@ class WeInputState extends State<WeInput> {
     }
 
     return WeCell(
-      // label
-      label: label,
-      footer: footer,
-      minHeight: widget.height,
-      content: DefaultTextStyle(
-        style: TextStyle(
-          fontSize: 16.0,
-          color: Colors.black
-        ),
-        child: TextField(
-          autofocus: widget.autofocus,
-          textAlign: widget.textAlign,
-          keyboardType: widget.type,
-          textInputAction: textInputAction,
-          obscureText: widget.obscureText,
-          style: widget.style,
-          controller: controller,
-          focusNode: widget.focusNode,
-          onChanged: _onChange,
-          maxLines: widget.maxLines,
-          maxLength: widget.maxLength,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: widget.hintText,
-            counterText: ''
-          )
-        )
-      )
-    );
+        // label
+        label: label,
+        footer: footer,
+        minHeight: widget.height,
+        content: DefaultTextStyle(
+            style: TextStyle(fontSize: 16.0, color: Colors.black),
+            child: TextField(
+                autofocus: widget.autofocus,
+                textAlign: widget.textAlign,
+                keyboardType: type,
+                textInputAction: textInputAction,
+                obscureText: widget.obscureText,
+                style: widget.style,
+                controller: controller,
+                focusNode: widget.focusNode,
+                onChanged: _onChange,
+                maxLines: widget.maxLines,
+                maxLength: widget.maxLength,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: widget.hintText,
+                    counterText: ''))));
   }
 }

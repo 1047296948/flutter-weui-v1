@@ -5,7 +5,7 @@ import '../icon/index.dart';
 
 class WeInput extends StatefulWidget {
   // key
-  final Key key;
+  final Key? key;
 
   // label
   final dynamic label;
@@ -20,19 +20,19 @@ class WeInput extends StatefulWidget {
   final int maxLines;
 
   // 限制输入数量
-  final int maxLength;
+  final int? maxLength;
 
   // 提示文字
-  final String hintText;
+  final String? hintText;
 
   // 光标
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   // footer
-  final Widget footer;
+  final Widget? footer;
 
   // 是否显示清除
-  final bool clearable;
+  final bool showClear;
 
   // 文字对其方式
   final TextAlign textAlign;
@@ -44,7 +44,7 @@ class WeInput extends StatefulWidget {
   final bool obscureText;
 
   // 样式
-  final TextStyle style;
+  final TextStyle? style;
 
   // 是否自动获取光标
   final bool autofocus;
@@ -53,10 +53,12 @@ class WeInput extends StatefulWidget {
   final double labelWidth;
 
   // TextInputAction
-  final TextInputAction textInputAction;
+  final TextInputAction? textInputAction;
 
   // onChange
-  final Function(String value) onChange;
+  final Function(String value)? onChange;
+  final VoidCallback? onEditingComplete;
+  final ValueChanged<String>? onSubmitted;
 
   WeInput(
       {this.key,
@@ -68,7 +70,7 @@ class WeInput extends StatefulWidget {
       this.hintText,
       this.focusNode,
       this.footer,
-      this.clearable = false,
+      this.showClear = false,
       this.textAlign = TextAlign.start,
       this.textInputType = TextInputType.text,
       this.obscureText = false,
@@ -76,7 +78,9 @@ class WeInput extends StatefulWidget {
       this.autofocus = false,
       this.labelWidth = 80.0,
       this.textInputAction,
-      this.onChange})
+      this.onChange,
+      this.onEditingComplete,
+      this.onSubmitted})
       : this.label = toTextWidget(label, 'label'),
         super(key: key);
 
@@ -86,8 +90,8 @@ class WeInput extends StatefulWidget {
 
 class WeInputState extends State<WeInput> {
   final TextEditingController controller = TextEditingController();
-  TextInputAction textInputAction;
-  TextInputType type;
+  TextInputAction? textInputAction;
+  TextInputType? type;
 
   WeInputState() {
     _init();
@@ -115,25 +119,36 @@ class WeInputState extends State<WeInput> {
     );
   }
 
-  // 初始化
   _init() {
     WidgetsBinding.instance.addPostFrameCallback((Duration time) {
       _setValue(widget.defaultValue);
     });
   }
 
-  // 清除value
   void _clearValue() {
     _setValue('');
     if (widget.onChange is Function) {
-      widget.onChange('');
+      widget.onChange!('');
     }
   }
 
-  // 输入框onChange
   void _onChange(String value) {
     if (widget.onChange is Function) {
-      widget.onChange(value);
+      widget.onChange!(value);
+    }
+    setState(() {});
+  }
+
+  void _onComplete() {
+    if (widget.onEditingComplete is Function) {
+      widget.onEditingComplete!();
+    }
+    setState(() {});
+  }
+
+  void _onSubmitted(String value) {
+    if (widget.onSubmitted is Function) {
+      widget.onSubmitted!(value);
     }
     setState(() {});
   }
@@ -153,14 +168,14 @@ class WeInputState extends State<WeInput> {
             child: Icon(WeIcons.clear, color: Color(0xffc8c9cc), size: 25.0)));
 
     // label
-    Widget label;
+    Widget? label;
     if (widget.label is Widget) {
       label = Container(width: widget.labelWidth, child: widget.label);
     }
 
     // footer
-    Widget footer;
-    if (widget.clearable) {
+    Widget? footer;
+    if (widget.showClear) {
       footer = controller.text.length > 0 ? clearWidget : null;
     } else {
       footer = widget.footer;
@@ -183,6 +198,8 @@ class WeInputState extends State<WeInput> {
                 controller: controller,
                 focusNode: widget.focusNode,
                 onChanged: _onChange,
+                onEditingComplete: _onComplete,
+                onSubmitted: _onSubmitted,
                 maxLines: widget.maxLines,
                 maxLength: widget.maxLength,
                 decoration: InputDecoration(

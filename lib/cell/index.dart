@@ -12,7 +12,7 @@ class WeCells extends StatelessWidget {
   WeCells({
     this.boxBorder = true,
     this.spacing = labelSpacing,
-    @required this.children,
+    required this.children,
   });
 
   @override
@@ -47,11 +47,11 @@ class WeCells extends StatelessWidget {
 
 class WeCell extends StatelessWidget {
   // label
-  final Widget label;
+  final Widget? label;
   // 内容
-  final Widget content;
+  final Widget? content;
   // footer
-  final Widget footer;
+  final Widget? footer;
   // 对齐方式
   final Alignment align;
   // 间距
@@ -59,9 +59,9 @@ class WeCell extends StatelessWidget {
   // 最小高度
   final double minHeight;
   // 点击
-  final Function onClick;
+  final void Function()? onClick;
   // 长按
-  final Function onLongPress;
+  final void Function()? onLongPress;
 
   WeCell(
       {label,
@@ -77,26 +77,28 @@ class WeCell extends StatelessWidget {
 
   // 点击
   void onTap() {
-    onClick();
+    if(onClick is Function){
+      onClick!();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
-    final _WeCellsScope weCellsScope = _WeCellsScope.of(context);
+    final _WeCellsScope? weCellsScope = _WeCellsScope.of(context);
     final double _spacing =
-        weCellsScope == null ? spacing : weCellsScope.weCells.spacing;
+        weCellsScope == null ? spacing : weCellsScope.weCells!.spacing;
 
     // label
     if (label is Widget) {
-      children = [label];
+      children = [label!];
 
       if (content is Widget) {
         children.add(
             Expanded(flex: 1, child: Align(alignment: align, child: content)));
       }
-    } else {
-      children = [Expanded(flex: 1, child: content)];
+    } else if (content is Widget){
+      children = [Expanded(flex: 1, child: content!)];
     }
 
     // footer
@@ -125,15 +127,15 @@ class WeCell extends StatelessWidget {
 }
 
 class _WeCellsScope extends InheritedWidget {
-  final WeCells weCells;
+  final WeCells? weCells;
 
   _WeCellsScope({
-    Key key,
+    Key? key,
     child,
     this.weCells,
   }) : super(key: key, child: child);
 
-  static _WeCellsScope of(BuildContext context) {
+  static _WeCellsScope? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_WeCellsScope>();
   }
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 typedef CloseBack = Function(int index);
 
 // 字符串转Widget
-Widget toTextWidget(content, key) {
+Widget? toTextWidget(content, key) {
   if (content == null) return null;
   // 判断是字符串或者是widget
   if (content is Widget == false && content is String == false) {
@@ -20,22 +20,22 @@ Widget toTextWidget(content, key) {
 
 // 创建OverlayEntry
 Function() createOverlayEntry(
-    {@required BuildContext context,
-    @required Widget child,
+    {required BuildContext context,
+    required Widget child,
     bool backIntercept = false,
-    Function willPopCallback}) {
+    Function? willPopCallback}) {
   final overlayState = Overlay.of(context);
-  ModalRoute _route;
+  ModalRoute? _route;
 
   OverlayEntry overlayEntry = new OverlayEntry(builder: (context) {
     return DefaultTextStyle(
-        style: Theme.of(context).textTheme.bodyText1, child: child);
+        style: Theme.of(context).textTheme.bodyText1!, child: child);
   });
-  overlayState.insert(overlayEntry);
+  overlayState!.insert(overlayEntry);
 
   // 返回关闭
   Future<bool> backClose() {
-    willPopCallback();
+    if (willPopCallback is Function) willPopCallback();
     return Future.value(false);
   }
 
@@ -49,7 +49,7 @@ Function() createOverlayEntry(
     _route = ModalRoute.of(context);
 
     // back监听
-    _route.addScopedWillPopCallback(backClose);
+    _route!.addScopedWillPopCallback(backClose);
   }
 
   return close;

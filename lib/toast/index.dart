@@ -27,29 +27,29 @@ const Widget _failIcon = Icon(WeIcons.info, color: Colors.white, size: 49.0);
 final List<String> _weToastAlign = ['top', 'center', 'bottom'];
 
 // info
-typedef _info = Function(dynamic message, { int duration, WeToastInfoAlign align, double distance });
+typedef Info = Function(dynamic message, { int duration, WeToastInfoAlign align, double distance });
 // loading
-typedef _loading = Function({ dynamic message, int duration, bool mask, Widget icon });
+typedef Loading = Function({ dynamic message, int duration, bool mask, Widget icon });
 // success
-typedef _success = Function({ dynamic message, int duration, bool mask, Widget icon, Function onClose });
+typedef Success = Function({ dynamic message, int duration, bool mask, Widget icon, Function? onClose });
 // fail
-typedef _fail = Function({ dynamic message, int duration, bool mask, Widget icon, Function onClose });
+typedef Fail = Function({ dynamic message, int duration, bool mask, Widget icon, Function? onClose });
 // toast
-typedef _toast = Function({ dynamic message, int duration, bool mask, Widget icon, Function onClose });
+typedef Toast = Function({ dynamic message, int duration, bool mask, Widget icon, Function? onClose });
 // loading close
-typedef _close = Function();
+typedef Close = Function();
 
 class WeToast {
   // 信息提示
-  static _info info(BuildContext context) {
-    return (message, { duration, align, distance = 100.0 }) async {
+  static Info info(BuildContext context) {
+    return (message, {int? duration, WeToastInfoAlign? align, distance = 100.0 }) async {
       final WeConfig config = WeUi.getConfig(context);
       // 转换
-      final Widget messageWidget = toTextWidget(message, 'message');
+      final Widget? messageWidget = toTextWidget(message, 'message');
       final remove = createOverlayEntry(
         context: context,
         child: InfoWidget(
-          messageWidget,
+          messageWidget!,
           align: _weToastAlign[align == null ? config.toastInfoAlign.index : align.index],
           distance: distance
         )
@@ -62,8 +62,8 @@ class WeToast {
   }
 
   // 加载中
-  static _loading loading(BuildContext context) {
-    _close show({ message, duration, mask = true, icon }) {
+  static Loading loading(BuildContext context) {
+    Close show({ message, duration, mask = true, icon }) {
       final int toastLoadingDuration = WeUi.getConfig(context).toastLoadingDuration;
 
       return WeToast.toast(context)(
@@ -78,8 +78,8 @@ class WeToast {
   }
 
   // 成功
-  static _success success(BuildContext context) {
-    return ({ message, duration, mask = true, icon = _successIcon, onClose }) {
+  static Success success(BuildContext context) {
+    return ({ message,int? duration, mask = true, icon = _successIcon,Function? onClose }) {
       final int toastSuccessDuration = WeUi.getConfig(context).toastSuccessDuration;
       WeToast.toast(context)(
         icon: icon,
@@ -92,8 +92,8 @@ class WeToast {
   }
 
   // 失败
-  static _fail fail(BuildContext context) {
-    return ({ message, duration, mask = true, icon = _failIcon, onClose }) {
+  static Fail fail(BuildContext context) {
+    return ({ message,int? duration, mask = true, icon = _failIcon,Function? onClose }) {
       final int toastFailDuration = WeUi.getConfig(context).toastFailDuration;
       WeToast.toast(context)(
         icon: icon,
@@ -106,11 +106,11 @@ class WeToast {
   }
 
   // 提示
-  static _toast toast(BuildContext context) {
-    return ({ message, duration, mask = true, icon, onClose }) {
+  static Toast toast(BuildContext context) {
+    return ({ message,int? duration, mask = true,Widget? icon,Function? onClose }) {
       // 转换
-      final Widget messageWidget = toTextWidget(message, 'message');
-      Function remove = createOverlayEntry(
+      final Widget? messageWidget = toTextWidget(message, 'message');
+      Function? remove = createOverlayEntry(
         context: context,
         child: ToastWidget(
           message: messageWidget,
@@ -121,7 +121,7 @@ class WeToast {
 
       void close() {
         if (remove != null) {
-          remove();
+          remove!();
           remove = null;
         }
       }

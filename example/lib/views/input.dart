@@ -31,7 +31,7 @@ class _InputPageState extends State {
               TextTitle('表单'),
               WeForm(key: formKey, children: <Widget>[
                 WeInput(label: '标题标题', hintText: '请输入姓名'),
-                WeInput(label: '标题', hintText: '带清除按钮', clearable: true),
+                WeInput(label: '标题', hintText: '带清除按钮', showClear: true),
                 WeInput(
                     key: inputKey,
                     label: '标题',
@@ -45,7 +45,7 @@ class _InputPageState extends State {
                 WeInput(
                     label: '密码',
                     hintText: '请输入密码',
-                    clearable: true,
+                    showClear: true,
                     obscureText: true),
                 WeInput(hintText: '多行文本输入框...', maxLines: 4),
                 WeInput(

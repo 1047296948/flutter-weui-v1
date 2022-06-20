@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import '../theme/index.dart';
 import './utils.dart';
+import 'index.dart';
 
 class AndroidWidget extends StatefulWidget {
   final bool maskClosable;
-  final Function() close;
-  final Function(int index) onChange;
-  final List<dynamic> childer;
+  final Function()? close;
+  final Function(int index)? onChange;
+  final List<WeActionSheetItem> children;
 
   AndroidWidget(
-      {key, this.maskClosable, this.close, this.onChange, this.childer})
+      {key, this.maskClosable=true, this.close, this.onChange,required this.children})
       : super(key: key);
 
   @override
@@ -18,10 +19,10 @@ class AndroidWidget extends StatefulWidget {
 
 class AndroidWidgetState extends State<AndroidWidget>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
-  int _index;
-  WeTheme theme;
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  late int? _index;
+  late WeTheme theme;
 
   @override
   void initState() {
@@ -48,9 +49,13 @@ class AndroidWidgetState extends State<AndroidWidget>
   animateListener(state) {
     if (state == AnimationStatus.dismissed) {
       if (_index == null) {
-        widget.close();
+        if(widget.close is Function){
+          widget.close!();
+        }
       } else {
-        widget.onChange(_index);
+        if(widget.onChange is Function){
+          widget.onChange!(_index!);
+        }
       }
     }
   }
@@ -89,7 +94,7 @@ class AndroidWidgetState extends State<AndroidWidget>
                             child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: initChilder(widget.childer, itemClick,
+                                children: initChildren(widget.children, itemClick,
                                     theme.defaultBorderColor,
                                     align: Alignment.centerLeft))))))));
   }

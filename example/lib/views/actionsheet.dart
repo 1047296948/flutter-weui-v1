@@ -9,15 +9,15 @@ import 'package:weui/weui.dart';
 // ];
 
 final options = [
-  WeActionsheetItem(
+  WeActionSheetItem(
     label: '选项一',
     value: '1'
   ),
-  WeActionsheetItem(
+  WeActionSheetItem(
     label: '选项二',
     value: '2'
   ),
-  WeActionsheetItem(
+  WeActionSheetItem(
     label: '选项三',
     value: '3'
   )
@@ -26,8 +26,8 @@ final options = [
 class ActionsheetPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final WeActionsheetAndroid actionsheetAndroid = WeActionsheet.android(context);
-    final WeActionsheetIos actionsheetIos = WeActionsheet.ios(context);
+    final WeActionSheetAndroid actionsheetAndroid = WeActionSheet.android(context);
+    final WeActionSheetIos actionsheetIos = WeActionSheet.ios(context);
 
     return Sample(
       'Actionsheet',

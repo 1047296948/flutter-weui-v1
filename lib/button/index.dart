@@ -23,7 +23,7 @@ class WeButton extends StatefulWidget {
   final bool disabled;
 
   // 点击回调
-  final Function onClick;
+  final Function? onClick;
 
   // loading
   final bool loading;
@@ -57,10 +57,10 @@ class WeButton extends StatefulWidget {
 
 class _ButtonState extends State<WeButton> {
   // 主题
-  List<Map<String, Color>> themeConfig;
+  late List<Map<String, Color?>> themeConfig;
 
   // 按钮主题
-  Map<String, Color> theme;
+  late Map<String, Color?> theme;
 
   @override
   void didChangeDependencies() {
@@ -99,9 +99,9 @@ class _ButtonState extends State<WeButton> {
     if (widget.hollow) {
       this.theme = {
         'backgroundColor': Colors.transparent,
-        'fontColor': themeConf['hollowColor'],
+        'fontColor': themeConf['hollowColor']!,
         'disabledBackgroundColor': null,
-        'borderColor': themeConf['hollowColor']
+        'borderColor': themeConf['hollowColor']!
       };
     } else {
       this.theme = themeConf;
@@ -111,7 +111,7 @@ class _ButtonState extends State<WeButton> {
   // 按钮点击
   onClick() {
     if (widget.onClick is Function) {
-      widget.onClick();
+      widget.onClick!();
     }
   }
 
@@ -172,7 +172,7 @@ class _ButtonState extends State<WeButton> {
             // 空心或者默认按钮才添加边框
             border: widget.hollow || widget.theme == WeButtonType.acquiescent
                 ? Border.all(
-                    width: size['borderSize'], color: theme['borderColor'])
+                    width: size['borderSize']!, color: theme['borderColor']!)
                 : null),
         child: renderChild(widget.child));
 

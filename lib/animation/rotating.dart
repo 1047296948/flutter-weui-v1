@@ -12,8 +12,8 @@ class Rotating extends StatefulWidget {
 
 class RotatingState extends State<Rotating>
     with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
+  late AnimationController controller;
+  late Animation<double> animation;
 
   @override
   void initState() {

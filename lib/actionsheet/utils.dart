@@ -5,14 +5,14 @@ import '../utils.dart';
 final double _leftPadding = 18.0;
 final double _topPadding = 12.0;
 
-List<Widget> initChilder(
-    List<WeActionsheetItem> childer, onChange, Color borderColor,
+List<Widget> initChildren(
+    List<WeActionSheetItem> children, onChange, Color borderColor,
     {Alignment align = Alignment.center}) {
   // 列表
   final List<Widget> list = [];
 
-  // 循环childer
-  for (int index = 0; index < childer.length; index++) {
+  // 循环children
+  for (int index = 0; index < children.length; index++) {
     // 边框
     if (index != 0) {
       list.add(Divider(height: 1, color: borderColor));
@@ -37,7 +37,7 @@ List<Widget> initChilder(
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
                             child: toTextWidget(
-                                childer[index].label, 'childer中的值'))))))));
+                                children[index].label, 'childer中的值')!)))))));
   }
 
   return list;

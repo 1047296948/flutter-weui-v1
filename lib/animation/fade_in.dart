@@ -5,11 +5,11 @@ class FadeIn extends StatefulWidget {
   final int duration;
   final listener;
   final autoPlay;
-  final AnimationController controller;
+  final AnimationController? controller;
 
   FadeIn(
       {key,
-      @required this.child,
+      required this.child,
       this.duration = 250,
       this.listener,
       this.autoPlay = true,
@@ -21,8 +21,8 @@ class FadeIn extends StatefulWidget {
 }
 
 class FadeInState extends State<FadeIn> with SingleTickerProviderStateMixin {
-  AnimationController controller;
-  Animation<double> animation;
+  late AnimationController controller;
+  late Animation<double> animation;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class FadeInState extends State<FadeIn> with SingleTickerProviderStateMixin {
 
   void createAnimate() {
     if (widget.controller != null) {
-      controller = widget.controller;
+      controller = widget.controller!;
     } else {
       controller = AnimationController(
           vsync: this, duration: Duration(milliseconds: widget.duration));

@@ -8,8 +8,8 @@ class Scale extends StatefulWidget {
   final double end;
 
   Scale(
-      {key,
-      @required this.child,
+      {Key? key,
+      required this.child,
       this.autoPlay = true,
       this.duration = 150,
       this.begin = 0.0,
@@ -21,8 +21,8 @@ class Scale extends StatefulWidget {
 }
 
 class ScaleState extends State<Scale> with TickerProviderStateMixin {
-  AnimationController controller;
-  Animation transform;
+  late AnimationController controller;
+  late Animation transform;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class ScaleState extends State<Scale> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
         animation: controller,
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return Transform.scale(scale: transform.value, child: widget.child);
         });
   }

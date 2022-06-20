@@ -6,35 +6,35 @@ import '../utils.dart';
 // 关闭函数
 typedef _Close = Function();
 // change
-typedef _onChange = Function(String index);
+typedef _OnChange = Function(String index);
 // 安卓
-typedef WeActionsheetAndroid = Function(
-    {@required List<WeActionsheetItem> options,
-    _Close onClose,
+typedef WeActionSheetAndroid = Function(
+    {_Close? onClose,
     bool maskClosable,
-    _onChange onChange});
+    _OnChange? onChange,
+    required List<WeActionSheetItem> options});
 // ios
-typedef WeActionsheetIos = Function(
+typedef WeActionSheetIos = Function(
     {dynamic title,
-    @required List<WeActionsheetItem> options,
+    required List<WeActionSheetItem> options,
     bool maskClosable,
     dynamic cancelButton,
-    _Close onClose,
-    _onChange onChange});
+    _Close? onClose,
+    _OnChange? onChange});
 
-// WeActionsheet
-class WeActionsheet {
+// WeActionSheet
+class WeActionSheet {
   // 安卓样式
-  static WeActionsheetAndroid android(BuildContext context) {
-    return ({maskClosable = true, onClose, onChange, options}) {
+  static WeActionSheetAndroid android(BuildContext context) {
+    return ({maskClosable = true, onClose, onChange, required options}) {
       final GlobalKey widgetKey = GlobalKey();
-      Function remove;
+      late Function remove;
 
       // 关闭
       void hide() {
         remove();
         if (onClose is Function) {
-          onClose();
+          onClose!();
         }
       }
 
@@ -42,8 +42,8 @@ class WeActionsheet {
       void itemClick(int index) {
         remove();
         if (onChange is Function) {
-          final String value = options[index].value;
-          onChange(value == null ? index.toString() : value);
+          final String? value = options[index].value;
+          onChange!(value == null ? index.toString() : value);
         }
       }
 
@@ -55,7 +55,7 @@ class WeActionsheet {
               maskClosable: maskClosable,
               close: hide,
               onChange: itemClick,
-              childer: options),
+              children: options),
           willPopCallback: () {
             (widgetKey.currentState as AndroidWidgetState).close();
           });
@@ -63,22 +63,22 @@ class WeActionsheet {
   }
 
   // ios 样式
-  static WeActionsheetIos ios(BuildContext context) {
+  static WeActionSheetIos ios(BuildContext context) {
     return (
         {title,
-        options,
+        required options,
         maskClosable = true,
         cancelButton,
         onClose,
         onChange}) {
       final GlobalKey widgetKey = GlobalKey();
-      Function remove;
+      late Function remove;
 
       // 关闭
       void hide() {
         remove();
         if (onClose is Function) {
-          onClose();
+          onClose!();
         }
       }
 
@@ -87,7 +87,7 @@ class WeActionsheet {
         remove();
         if (onChange is Function) {
           final String value = options[index].value;
-          onChange(value == null ? index.toString() : value);
+          onChange!(value == null ? index.toString() : value);
         }
       }
 
@@ -101,7 +101,7 @@ class WeActionsheet {
               maskClosable: maskClosable,
               close: hide,
               onChange: itemClick,
-              childer: options),
+              children: options),
           willPopCallback: () {
             (widgetKey.currentState as IosWidgetState).close();
           });
@@ -109,9 +109,9 @@ class WeActionsheet {
   }
 }
 
-class WeActionsheetItem {
+class WeActionSheetItem {
   final label;
   final String value;
 
-  WeActionsheetItem({@required this.label, this.value});
+  WeActionSheetItem({required this.label, required this.value});
 }

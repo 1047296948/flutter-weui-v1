@@ -3,9 +3,9 @@ import '../theme/index.dart';
 
 class WeBadge extends StatefulWidget {
   final child;
-  final Color color;
-  final TextStyle textStyle;
-  final Border border;
+  final Color? color;
+  final TextStyle? textStyle;
+  final Border? border;
   final bool hollow;
 
   WeBadge(
@@ -20,20 +20,20 @@ class WeBadge extends StatefulWidget {
 }
 
 class WeBadgeState extends State<WeBadge> {
-  Color color;
+  late Color color;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final WeTheme theme = WeUi.getTheme(context);
-    color = widget.color == null ? theme.warnColor : widget.color;
+    color = widget.color == null ? theme.warnColor : widget.color!;
   }
 
   @override
   Widget build(BuildContext context) {
-    Color textColor;
+    Color? textColor;
     Color boxColor;
-    Border border;
+    Border? border;
 
     if (widget.hollow) {
       textColor = color;

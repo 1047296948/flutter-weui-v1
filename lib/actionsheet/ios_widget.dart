@@ -2,23 +2,24 @@ import 'package:flutter/material.dart';
 import '../utils.dart';
 import './utils.dart';
 import '../theme/index.dart';
+import 'index.dart';
 
 class IosWidget extends StatefulWidget {
   final dynamic title;
   final bool maskClosable;
   final dynamic cancelButton;
-  final Function() close;
-  final Function(int index) onChange;
-  final List<dynamic> childer;
+  final Function()? close;
+  final Function(int index)? onChange;
+  final List<WeActionSheetItem> children;
 
   IosWidget(
-      {key,
+      {Key? key,
       this.title,
-      this.maskClosable,
+      this.maskClosable = true,
       this.cancelButton,
       this.close,
       this.onChange,
-      this.childer})
+      required this.children})
       : super(key: key);
 
   @override
@@ -32,19 +33,19 @@ class IosWidgetState extends State<IosWidget> with TickerProviderStateMixin {
   double _boxHeight = 0;
 
   // 是否是取消
-  int _index;
+  int? _index;
 
   // 动画
-  AnimationController _controller;
+  late AnimationController _controller;
 
   //高度动画
-  Animation<double> top;
+  late Animation<double> top;
 
   // 高度
-  Animation<double> opacity;
+  late Animation<double>? opacity;
 
   // 主题
-  WeTheme theme;
+  late WeTheme theme;
 
   @override
   void initState() {
@@ -62,7 +63,7 @@ class IosWidgetState extends State<IosWidget> with TickerProviderStateMixin {
 
   // 获取容器高度
   void getBoxHeight(Duration time) {
-    _boxHeight = _boxKey.currentContext.size.width;
+    _boxHeight = _boxKey.currentContext!.size!.width;
     createAnimate();
     startAnimate();
   }
@@ -88,9 +89,9 @@ class IosWidgetState extends State<IosWidget> with TickerProviderStateMixin {
   void animateEnd(state) {
     if (state == AnimationStatus.dismissed) {
       if (_index == null) {
-        widget.close();
+        if (widget.close is Function) widget.close!();
       } else {
-        widget.onChange(_index);
+        if (widget.onChange is Function) widget.onChange!(_index!);
       }
       // 销毁
       _controller.dispose();
@@ -120,7 +121,7 @@ class IosWidgetState extends State<IosWidget> with TickerProviderStateMixin {
                     color: Colors.black,
                     fontSize: 17.0,
                     fontWeight: FontWeight.w500),
-                child: toTextWidget(widget.title, 'title'))));
+                child: toTextWidget(widget.title, 'title')!)));
   }
 
   // 取消按钮
@@ -141,7 +142,7 @@ class IosWidgetState extends State<IosWidget> with TickerProviderStateMixin {
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
                             child: toTextWidget(
-                                widget.cancelButton, 'cancelButton')))))));
+                                widget.cancelButton, 'cancelButton')!))))));
   }
 
   @override
@@ -157,7 +158,7 @@ class IosWidgetState extends State<IosWidget> with TickerProviderStateMixin {
 
     // 选项
     list.addAll(
-        initChilder(widget.childer, itemClick, theme.defaultBorderColor));
+        initChildren(widget.children, itemClick, theme.defaultBorderColor));
 
     // 取消按钮
     if (widget.cancelButton != null) {
@@ -166,7 +167,7 @@ class IosWidgetState extends State<IosWidget> with TickerProviderStateMixin {
 
     return AnimatedBuilder(
         animation: _controller,
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return Stack(children: <Widget>[
             // 遮罩层
             Positioned(
@@ -179,7 +180,7 @@ class IosWidgetState extends State<IosWidget> with TickerProviderStateMixin {
                       if (widget.maskClosable) close();
                     },
                     child: Opacity(
-                        opacity: opacity == null ? 0.0 : opacity.value,
+                        opacity: opacity == null ? 0.0 : opacity!.value,
                         child: SizedBox(
                             child: DecoratedBox(
                                 decoration:

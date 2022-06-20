@@ -55,7 +55,7 @@ class ToastPage extends StatelessWidget {
           rowBox,
           TextTitle('其他提示', noPadding: true),
           WeButton('loading', theme: WeButtonType.primary, onClick: () {
-            final Function close = WeToast.loading(context)(
+            final close = WeToast.loading(context)(
               message: '加载中...'
             );
             // 五秒后关闭

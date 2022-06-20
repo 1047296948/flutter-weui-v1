@@ -9,7 +9,7 @@ class RadioListPage extends StatefulWidget {
 }
 
 class _RadioListState extends State<RadioListPage> {
-  String value;
+  late String value;
   final List<WeRadiolistItem> options = [
     WeRadiolistItem(
       label: '选项一',

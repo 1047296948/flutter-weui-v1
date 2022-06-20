@@ -35,7 +35,7 @@ final Widget child = Row(
 );
 
 class RadioPageState extends State {
-  String value;
+  late String value;
 
   @override
   Widget build (BuildContext context) {
@@ -62,7 +62,7 @@ class RadioPageState extends State {
               },
             ),
             TextTitle('受控组件', noPadding: true),
-            WeRadioGroup(
+            WeRadioGroup<String>(
               value: value,
               onChange: (data) {
                 this.setState(() {

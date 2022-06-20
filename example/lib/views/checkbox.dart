@@ -62,7 +62,7 @@ class CheckboxPageState extends State {
               },
             ),
             TextTitle('受控组件', noPadding: true),
-            WeCheckboxGroup(
+            WeCheckboxGroup<String>(
               value: value,
               onChange: (data) {
                 this.setState(() {

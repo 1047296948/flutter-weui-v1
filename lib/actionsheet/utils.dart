@@ -37,7 +37,7 @@ List<Widget> initChildren(
                             style:
                                 TextStyle(fontSize: 16.0, color: Colors.black),
                             child: toTextWidget(
-                                children[index].label, 'childer中的值')!)))))));
+                                children[index].label, 'children中的值')!)))))));
   }
 
   return list;

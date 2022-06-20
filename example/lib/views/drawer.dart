@@ -45,7 +45,7 @@ class DrawerPageState extends State {
           }),
           SizedBox(height: 20.0),
           WeButton('无遮罩', theme: WeButtonType.primary, onClick: () {
-            Function close;
+            late Function close;
             close = weDrawer(context)(
               mask: false,
               placement: WeDrawerPlacement.right,

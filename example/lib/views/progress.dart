@@ -11,7 +11,7 @@ class ProgressPage extends StatefulWidget {
 
 class ProgressState extends State {
   double value = 0.0;
-  Timer timer;
+  late Timer? timer;
 
   startUpload() {
     timer?.cancel();

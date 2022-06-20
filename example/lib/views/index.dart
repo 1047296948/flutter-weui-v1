@@ -22,7 +22,7 @@ class IndexState extends State<Index> {
     {
       'title': '表单',
       'icon': 'assets/images/index-icon/icon_nav_form.png',
-      'childer': [
+      'children': [
         {
           'title': 'Button',
           'url': '/button'
@@ -68,7 +68,7 @@ class IndexState extends State<Index> {
     {
       'title': '基础组建',
       'icon': 'assets/images/index-icon/icon_nav_layout.png',
-      'childer': [
+      'children': [
         {
           'title': 'Badge',
           'url': '/badge'
@@ -86,7 +86,7 @@ class IndexState extends State<Index> {
           'url': '/icon'
         },
         {
-          'title': 'Loadmore',
+          'title': 'LoadMore',
           'url': '/loadmore'
         },
         {
@@ -98,7 +98,7 @@ class IndexState extends State<Index> {
     {
       'title': '展示组件',
       'icon': 'assets/images/index-icon/icon_nav_layout.png',
-      'childer': [
+      'children': [
         {
           'title': 'Swipe',
           'url': '/swipe'
@@ -124,7 +124,7 @@ class IndexState extends State<Index> {
     {
       'title': '操作反馈',
       'icon': 'assets/images/index-icon/icon_nav_feedback.png',
-      'childer': [
+      'children': [
         {
           'title': 'Drawer',
           'url': '/drawer'
@@ -183,7 +183,7 @@ class IndexState extends State<Index> {
   // 渲染二级列表
   List<Widget> renderSubItem(subList) {
     final List<Widget> widgetList = [];
-
+    if(subList==null) return [];
     // 循环数组
     subList.forEach((dynamic item) {
       final List<Widget> content = [
@@ -256,7 +256,7 @@ class IndexState extends State<Index> {
               flex: 1,
               child: child
             ),
-            Image.asset(list[index]['icon'], height: 22.0)
+            Image.asset(list[index]['icon'] as String, height: 22.0)
           ]
         )
       )
@@ -271,16 +271,16 @@ class IndexState extends State<Index> {
   @override
   Widget build (BuildContext context) {
     final List<WeCollapseItem> children = [];
-    final theme = WeUi.getTheme(context);
+    // final theme = WeUi.getTheme(context);
 
     list.forEach((item) {
       children.add(
         WeCollapseItem(
-          title: Text(item['title'], style: TextStyle(
+          title: Text(item['title'] as String, style: TextStyle(
             fontSize: 16.0
           )),
           child: Column(
-            children: renderSubItem(item['childer'])
+            children: renderSubItem(item['children'])
           )
         )
       );

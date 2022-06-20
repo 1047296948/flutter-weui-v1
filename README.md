@@ -20,13 +20,13 @@
 
 ## 安装
 ```
-weui: 0.0.8
+weui_v1: ^1.0.0-alpha
 ```
 
 ## 如何运行案例
 #### 1. clone 代码
 ```
-git clone https://github.com/allan-hx/flutter-weui.git
+git clone https://github.com/RighFS/flutter-weui.git
 ```
 
 #### 2. 安装依赖

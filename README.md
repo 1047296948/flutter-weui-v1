@@ -1,10 +1,11 @@
 ### flutter-weui源码
-# weui   [![pub package](https://img.shields.io/badge/-v0.0.8-brightgreen.svg)](https://pub.dartlang.org/packages/weui)
+# weui   [![pub package](https://img.shields.io/badge/-v1.0.0-brightgreen.svg)](https://pub.dartlang.org/packages/weui)
 
 #### 用flutter实现的weui框架, 实现了weui大部分的组件, 同时支持android 和 ios, 欢迎大家使用和交流
-
+## 最近更新
+1. 适配空安全
 ## app下载
-- ### [android](https://github.com/allan-hx/flutter-weui/releases/download/v0.0.8/app-release.apk)
+- ### [android](https://github.com/RightFS/flutter-weui/releases/download/v1.0.0-alpha/app-release.apk)
 - ### ios 暂无下载地址, 需手动执行安装
 
 ## [文档](https://allan-hx.github.io/flutter-weui-doc/index.html)

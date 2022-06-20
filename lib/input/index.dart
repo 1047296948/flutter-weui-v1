@@ -7,6 +7,9 @@ class WeInput extends StatefulWidget {
   // key
   final Key? key;
 
+// readonly
+  final bool readOnly;
+
   // label
   final dynamic label;
 
@@ -63,6 +66,7 @@ class WeInput extends StatefulWidget {
   WeInput(
       {this.key,
       label,
+      this.readOnly = false,
       this.height = 48,
       this.defaultValue = '',
       this.maxLines = 1,
@@ -189,6 +193,7 @@ class WeInputState extends State<WeInput> {
         content: DefaultTextStyle(
             style: TextStyle(fontSize: 16.0, color: Colors.black),
             child: TextField(
+                readOnly: widget.readOnly,
                 autofocus: widget.autofocus,
                 textAlign: widget.textAlign,
                 keyboardType: type,

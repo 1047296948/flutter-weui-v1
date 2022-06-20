@@ -1,7 +1,7 @@
 name: weui
-description: flutter版的weui
-version: 0.0.8
-homepage: https://github.com/allan-hx/flutter-weui
+description: flutter weui
+version: 1.0.0-alpha
+homepage: https://github.com/RightFS/flutter-weui
 
 environment:
   sdk: ">=2.12.0 <=3.0.2"

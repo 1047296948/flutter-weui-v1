@@ -66,7 +66,7 @@ class IndexState extends State<Index> {
       ]
     },
     {
-      'title': '基础组建',
+      'title': '基础组件',
       'icon': 'assets/images/index-icon/icon_nav_layout.png',
       'children': [
         {

@@ -19,7 +19,7 @@ enum WeToastInfoAlign {
 
 // loading icon
 final Widget _loadingIcon =
-    Image.asset('assets/images/loading.png', height: 42.0, package: 'weui');
+    Image.asset('assets/images/loading.png', height: 42.0, package: 'weui_v1');
 // success icon
 const Widget _successIcon = Icon(WeIcons.hook, color: Colors.white, size: 49.0);
 // fail icon

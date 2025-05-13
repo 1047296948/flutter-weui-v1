@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const String fontFamily = 'iconfont';
-const String fontPackage = 'weui';
+const String fontPackage = 'weui_v1';
 
 class WeIcons {
   // success
